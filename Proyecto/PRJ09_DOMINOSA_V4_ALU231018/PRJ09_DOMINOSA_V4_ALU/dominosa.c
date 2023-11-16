@@ -215,3 +215,5 @@ int main()
         }
         printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
 }
+
+//TO-DO: QUE NO ACABE SI LAS CONEXIONES NO SON CORRECTAS
