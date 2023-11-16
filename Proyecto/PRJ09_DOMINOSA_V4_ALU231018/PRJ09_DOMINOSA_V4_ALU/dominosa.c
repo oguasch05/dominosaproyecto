@@ -18,9 +18,10 @@ int main()
 {
         tcasilla casilla[MAX_FILAS][MAX_COLUMNAS];
 
-        unsigned int conexiones = 0, max_conexiones;
+        unsigned int conexiones, max_conexiones, conexiones_reales = 0;
         int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas;
-	char nombre_fichero[SIZE_NOMBRE_FICHERO], charf = 'A', y1, y2;
+	char nombre_fichero[SIZE_NOMBRE_FICHERO], charf, y1, y2;
+        int conexion[MAX_FILAS][MAX_COLUMNAS];
 
 
         printf("Introduce el nombre del fichero: ");
@@ -48,9 +49,10 @@ int main()
                 }
                 cerrar_fichero();
 	}
-        while(conexiones < max_conexiones && ) //cuando deje de cumplirse, el juego acaba
+        while(conexiones_reales < max_conexiones) //cuando deje de cumplirse, el juego acaba
         {
                 conexiones = 0; //numero de conexiones
+                conexiones_reales = 0; //numero de conexiones reales (no iguales)
                 charf = 'A'; //cabecera de fila
                 t = 0; //cabecera de columna
                 printf_color_negrita();
@@ -102,7 +104,23 @@ int main()
                 printf("\n");
                 printf("\nConexiones: %u de %u\n\n", conexiones, max_conexiones); //escribe "__ conexiones de __"
 
-                if(conexiones == max_conexiones)
+                for(f=0;f<nf;f++)
+                {
+                        for(c=0;c<nc;c++)
+                        {
+                                if(casilla[f][c].e == TRUE)
+                                {
+                                        if(conexion[casilla[f][c].valor][casilla[f][c+1].valor] != TRUE)
+                                        {
+                                                conexion[casilla[f][c].valor][casilla[f][c+1].valor] = TRUE;
+                                                conexiones_reales++;
+                                        }
+                                        else
+                                                conexiones_reales--;
+                                }
+                        }
+                }
+                if(conexiones_reales >= max_conexiones)
                         break;
 
                 do
