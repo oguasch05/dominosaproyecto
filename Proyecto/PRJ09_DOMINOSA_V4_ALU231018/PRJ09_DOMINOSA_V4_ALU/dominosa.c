@@ -120,7 +120,7 @@ int main()
                                 }
                         }
                 }
-                if(conexiones_reales >= max_conexiones)
+                if(conexiones_reales == max_conexiones)
                         break;
 
                 do
@@ -231,7 +231,8 @@ int main()
                 }       
 
         }
-        printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
+        if(conexiones_reales == max_conexiones)
+		printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
 }
 
 //TO-DO: QUE NO ACABE SI LAS CONEXIONES NO SON CORRECTAS
