@@ -18,12 +18,12 @@ int main()
 {
         tcasilla casilla[MAX_FILAS][MAX_COLUMNAS];
 
-        unsigned int conexiones, max_conexiones, conexiones_reales = 0;
-        int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas;
+        unsigned int conexiones, max_conexiones;
+        int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas, n1, n2;
 	char nombre_fichero[SIZE_NOMBRE_FICHERO], charf, y1, y2;
         int conexion[MAX_FILAS][MAX_COLUMNAS];
 
-
+	//inicio funcion inicializacion
         printf("Introduce el nombre del fichero: ");
 	scanf("%s%*c", nombre_fichero);
 	err = abrir_fichero(nombre_fichero);
@@ -49,16 +49,19 @@ int main()
                 }
                 cerrar_fichero();
 	}
-        while(conexiones_reales < max_conexiones) //cuando deje de cumplirse, el juego acaba
+	//final funcion inicializacion
+        while(n1<=n) //cuando deje de cumplirse, el juego acaba (main loop)
         {
                 conexiones = 0; //numero de conexiones
-                conexiones_reales = 0; //numero de conexiones reales (no iguales)
+                n1 = 0;
+		n2 = 0;
                 charf = 'A'; //cabecera de fila
                 t = 0; //cabecera de columna
                 printf_color_negrita();
                 printf("\n");
 
-                for(c=0;c<nc;c++)
+                //inicio funcion dibujar tablero
+		for(c=0;c<nc;c++)
                 {
                         printf("   %d", t); //escribe la cabecera de las columnas
                         t++;
@@ -100,6 +103,7 @@ int main()
                         } printf(" +\n");
 
                 }
+		//final funcion dibujar tablero
 
                 printf("\n");
                 printf("\nConexiones: %u de %u\n\n", conexiones, max_conexiones); //escribe "__ conexiones de __"
@@ -130,9 +134,9 @@ int main()
                                 }
                         }
                 }
-                if(conexiones_reales == max_conexiones)
+                if(n1>n)
                         break;
-
+		//inicio funcion añadir conexiones
                 do
                 {               
                         printf("Casillas a conectar/desconectar (ej: [A0B0]): "); //pide valores de dos casillas
@@ -239,10 +243,9 @@ int main()
                                 casilla[y1][x1].e = TRUE;
                         }
                 }       
-
+		//final funcion añadir conexiones
         }
-        if(conexiones_reales == max_conexiones)
-		printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
+	printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
 }
 
 //TO-DO: QUE NO ACABE SI LAS CONEXIONES NO SON CORRECTAS
