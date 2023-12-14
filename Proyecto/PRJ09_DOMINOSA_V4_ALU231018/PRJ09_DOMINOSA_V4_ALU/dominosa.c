@@ -116,7 +116,17 @@ int main()
                                                 conexiones_reales++;
                                         }
                                         else
-                                                conexiones_reales--;
+                                                //conexiones_reales--;
+                                }
+				if(casilla[f][c].s == TRUE)
+                                {
+                                        if(conexion[casilla[f][c].valor][casilla[f+1][c].valor] != TRUE)
+                                        {
+                                                conexion[casilla[f][c].valor][casilla[f+1][c].valor] = TRUE;
+                                                conexiones_reales++;
+                                        }
+                                        else
+                                                //conexiones_reales--;
                                 }
                         }
                 }
