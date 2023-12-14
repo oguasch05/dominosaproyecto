@@ -5,6 +5,7 @@
 #define SIZE_NOMBRE_FICHERO     80
 #define MAX_FILAS               11
 #define MAX_COLUMNAS            10
+#define MAX_N			9
 #define TRUE                    1
 #define FALSE                   0
 
@@ -21,7 +22,7 @@ int main()
         unsigned int conexiones, max_conexiones;
         int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas, n1, n2;
 	char nombre_fichero[SIZE_NOMBRE_FICHERO], charf, y1, y2;
-        int conexion[MAX_FILAS][MAX_COLUMNAS];
+        int ficha[MAX_N][MAX_N];
 
 	//inicio funcion inicializacion
         printf("Introduce el nombre del fichero: ");
@@ -112,25 +113,21 @@ int main()
                 {
                         for(c=0;c<nc;c++)
                         {
-                                if(casilla[f][c].e == TRUE)
+                                if((casilla[f][c].e == TRUE&&casilla[f][c].valor==n1&&casilla[f][c+1].valor==n2) || (casilla[f][c].e == TRUE&&casilla[f][c].valor==n2&&casilla[f][c+1].valor==n1) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==n1&&casilla[f+1][c].valor==n2) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==n2&&casilla[f+1][c].valor==n1))
                                 {
-                                        if(conexion[casilla[f][c].valor][casilla[f][c+1].valor] != TRUE)
-                                        {
-                                                conexion[casilla[f][c].valor][casilla[f][c+1].valor] = TRUE;
-                                                conexiones_reales++;
-                                        }
-                                        else
-                                                //conexiones_reales--;
-                                }
-				if(casilla[f][c].s == TRUE)
-                                {
-                                        if(conexion[casilla[f][c].valor][casilla[f+1][c].valor] != TRUE)
-                                        {
-                                                conexion[casilla[f][c].valor][casilla[f+1][c].valor] = TRUE;
-                                                conexiones_reales++;
-                                        }
-                                        else
-                                                //conexiones_reales--;
+                                	ficha[n1][n2] = TRUE;
+					f=0;
+					c=-1;
+					n2++;
+					if(n2>n)
+					{
+						n1++;
+						n2=0;
+						while(n1>n2)
+							{
+								n2++;
+							}
+					}
                                 }
                         }
                 }
