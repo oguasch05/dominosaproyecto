@@ -20,7 +20,7 @@ int main()
         tcasilla casilla[MAX_FILAS][MAX_COLUMNAS];
 
         unsigned int conexiones, max_conexiones;
-        int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas, n1, n2;
+        int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas, n1=0, n2;
 	char nombre_fichero[SIZE_NOMBRE_FICHERO], charf, y1, y2;
         int ficha[MAX_N][MAX_N];
 
@@ -124,9 +124,7 @@ int main()
 						n1++;
 						n2=0;
 						while(n1>n2)
-							{
-								n2++;
-							}
+							n2++;
 					}
                                 }
                         }
