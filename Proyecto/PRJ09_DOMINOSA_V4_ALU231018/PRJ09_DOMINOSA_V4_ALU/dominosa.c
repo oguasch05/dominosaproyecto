@@ -109,6 +109,7 @@ int main()
                 printf("\n");
                 printf("\nConexiones: %u de %u\n\n", conexiones, max_conexiones); //escribe "__ conexiones de __"
 
+		//inicio funcion comprobar fichas
                 for(f=0;f<nf;f++)
                 {
                         for(c=0;c<nc;c++)
@@ -129,116 +130,118 @@ int main()
                                 }
                         }
                 }
-                if(n1>n)
-                        break;
-		//inicio funcion añadir conexiones
-                do
-                {               
-                        printf("Casillas a conectar/desconectar (ej: [A0B0]): "); //pide valores de dos casillas
-                        scanf("%c%d%c%d%*c", &y1, &x1, &y2, &x2);       //guarda valores de dos casillas en x1, x2, y1, y2
-                        if(y1>='a'&&y1<='z')
-                        {
-                                y1 = y1-'a'; //si la letra introducida es minuscula, y1 pasa a valer un numero (a=0,b=1,c=2,...)
-                        }
-                        if(y1>='A'&&y1<='Z')
-                        {
-                                y1 = y1-'A'; //si la letra introducida es mayuscula, y1 pasa a valer un numero (A=0,B=1,C=2,...)
-                        }
-                        if(y2>='a'&&y2<='z')
-                        {
-                                y2 = y2-'a'; //si la letra introducida es minuscula, y2 pasa a valer un numero (a=0,b=1,c=2,...)
-                        }
-                        if(y2>='A'&&y2<='Z')
-                        {
-                                y2 = y2-'A'; //si la letra introducida es mayuscula, y2 pasa a valer un numero (A=0,B=1,C=2,...)
-                        }
-                }
-                while(x1==x2 && y1==y2 || x1!=x2 && y1!=y2 || x1-x2!=1 && y1-y2!=1 && x2-x1!=1 && y2-y1!=1 || y1>nf-1 || y2>nf-1 || x1>nc || x2>nc); //comprueba que la conexion es posible
-                if(y1>y2)
-                {
-                        if(casilla[y2][x1].s == TRUE)
-                        {
-                                casilla[y2][x1].s = FALSE;
-                        }
-                        else
-                        {
-                                casilla[y1][x1].e = FALSE;
-                                casilla[y1][x1].s = FALSE;
-                                casilla[y2][x2].e = FALSE;
-                                casilla[y2][x2].s = FALSE;
-                                casilla[y1][x1-1].e = FALSE;
-                                casilla[y1-1][x1].s = FALSE;
-                                casilla[y2][x2-1].e = FALSE;
-                                casilla[y2-1][x2].s = FALSE;
-
-                                casilla[y2][x1].s = TRUE;
-                                
-                        }
-
-                }
-                else if(y1<y2)
-                {
-                        if(casilla[y1][x1].s == TRUE)
-                        {
-                                casilla[y1][x1].s = FALSE;
-                        }
-                        else
-                        {
-                                casilla[y1][x1].e = FALSE;
-                                casilla[y1][x1].s = FALSE;
-                                casilla[y2][x2].e = FALSE;
-                                casilla[y2][x2].s = FALSE;
-                                casilla[y1][x1-1].e = FALSE;
-                                casilla[y1-1][x1].s = FALSE;
-                                casilla[y2][x2-1].e = FALSE;
-                                casilla[y2-1][x2].s = FALSE;
-
-                                casilla[y1][x1].s = TRUE;
-                                
-                        }
-                }
-                else if(x1>x2)
-                {
-                        if(casilla[y1][x2].e == TRUE)
-                        {
-                                casilla[y1][x2].e = FALSE;
-                        }
-                        else
-                        {
-                                casilla[y1][x1].e = FALSE;
-                                casilla[y1][x1].s = FALSE;
-                                casilla[y2][x2].e = FALSE;
-                                casilla[y2][x2].s = FALSE;
-                                casilla[y1][x1-1].e = FALSE;
-                                casilla[y1-1][x1].s = FALSE;
-                                casilla[y2][x2-1].e = FALSE;
-                                casilla[y2-1][x2].s = FALSE;
-
-                                casilla[y1][x2].e = TRUE;
-                                
-                        }
-                }
-                else if(x1<x2)
-                {
-                        if(casilla[y1][x1].e == TRUE)
-                        {
-                                casilla[y1][x1].e = FALSE;
-                        }
-                        else
-                        {
-                                casilla[y1][x1].e = FALSE;
-                                casilla[y1][x1].s = FALSE;
-                                casilla[y2][x2].e = FALSE;
-                                casilla[y2][x2].s = FALSE;
-                                casilla[y1][x1-1].e = FALSE;
-                                casilla[y1-1][x1].s = FALSE;
-                                casilla[y2][x2-1].e = FALSE;
-                                casilla[y2-1][x2].s = FALSE;
-                                
-                                casilla[y1][x1].e = TRUE;
-                        }
-                }       
-		//final funcion añadir conexiones
+		//final fincion comprobar fichas
+                if(n1<=n)
+		{
+			//inicio funcion añadir conexiones
+	                do
+	                {               
+	                        printf("Casillas a conectar/desconectar (ej: [A0B0]): "); //pide valores de dos casillas
+	                        scanf("%c%d%c%d%*c", &y1, &x1, &y2, &x2);       //guarda valores de dos casillas en x1, x2, y1, y2
+	                        if(y1>='a'&&y1<='z')
+	                        {
+	                                y1 = y1-'a'; //si la letra introducida es minuscula, y1 pasa a valer un numero (a=0,b=1,c=2,...)
+	                        }
+	                        if(y1>='A'&&y1<='Z')
+	                        {
+	                                y1 = y1-'A'; //si la letra introducida es mayuscula, y1 pasa a valer un numero (A=0,B=1,C=2,...)
+	                        }
+	                        if(y2>='a'&&y2<='z')
+	                        {
+	                                y2 = y2-'a'; //si la letra introducida es minuscula, y2 pasa a valer un numero (a=0,b=1,c=2,...)
+	                        }
+	                        if(y2>='A'&&y2<='Z')
+	                        {
+	                                y2 = y2-'A'; //si la letra introducida es mayuscula, y2 pasa a valer un numero (A=0,B=1,C=2,...)
+	                        }
+	                }
+	                while(x1==x2 && y1==y2 || x1!=x2 && y1!=y2 || x1-x2!=1 && y1-y2!=1 && x2-x1!=1 && y2-y1!=1 || y1>nf-1 || y2>nf-1 || x1>nc || x2>nc); //comprueba que la conexion es posible
+	                if(y1>y2)
+	                {
+	                        if(casilla[y2][x1].s == TRUE)
+	                        {
+	                                casilla[y2][x1].s = FALSE;
+	                        }
+	                        else
+	                        {
+	                                casilla[y1][x1].e = FALSE;
+	                                casilla[y1][x1].s = FALSE;
+	                                casilla[y2][x2].e = FALSE;
+	                                casilla[y2][x2].s = FALSE;
+	                                casilla[y1][x1-1].e = FALSE;
+	                                casilla[y1-1][x1].s = FALSE;
+	                                casilla[y2][x2-1].e = FALSE;
+	                                casilla[y2-1][x2].s = FALSE;
+	
+	                                casilla[y2][x1].s = TRUE;
+	                                
+	                        }
+	
+	                }
+	                else if(y1<y2)
+	                {
+	                        if(casilla[y1][x1].s == TRUE)
+	                        {
+	                                casilla[y1][x1].s = FALSE;
+	                        }
+	                        else
+	                        {
+	                                casilla[y1][x1].e = FALSE;
+	                                casilla[y1][x1].s = FALSE;
+	                                casilla[y2][x2].e = FALSE;
+	                                casilla[y2][x2].s = FALSE;
+	                                casilla[y1][x1-1].e = FALSE;
+	                                casilla[y1-1][x1].s = FALSE;
+	                                casilla[y2][x2-1].e = FALSE;
+	                                casilla[y2-1][x2].s = FALSE;
+	
+	                                casilla[y1][x1].s = TRUE;
+	                                
+	                        }
+	                }
+	                else if(x1>x2)
+	                {
+	                        if(casilla[y1][x2].e == TRUE)
+	                        {
+	                                casilla[y1][x2].e = FALSE;
+	                        }
+	                        else
+	                        {
+	                                casilla[y1][x1].e = FALSE;
+	                                casilla[y1][x1].s = FALSE;
+	                                casilla[y2][x2].e = FALSE;
+	                                casilla[y2][x2].s = FALSE;
+	                                casilla[y1][x1-1].e = FALSE;
+	                                casilla[y1-1][x1].s = FALSE;
+	                                casilla[y2][x2-1].e = FALSE;
+	                                casilla[y2-1][x2].s = FALSE;
+	
+	                                casilla[y1][x2].e = TRUE;
+	                                
+	                        }
+	                }
+	                else if(x1<x2)
+	                {
+	                        if(casilla[y1][x1].e == TRUE)
+	                        {
+	                                casilla[y1][x1].e = FALSE;
+	                        }
+	                        else
+	                        {
+	                                casilla[y1][x1].e = FALSE;
+	                                casilla[y1][x1].s = FALSE;
+	                                casilla[y2][x2].e = FALSE;
+	                                casilla[y2][x2].s = FALSE;
+	                                casilla[y1][x1-1].e = FALSE;
+	                                casilla[y1-1][x1].s = FALSE;
+	                                casilla[y2][x2-1].e = FALSE;
+	                                casilla[y2-1][x2].s = FALSE;
+	                                
+	                                casilla[y1][x1].e = TRUE;
+	                        }
+	                }       
+			//final funcion añadir conexiones
+		}
         }
 	printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
 }
