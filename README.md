@@ -7,5 +7,5 @@ Para ejecutar el codigo modelo: ./ejdominosa
 
 Si no compila: chmod +x *nombre_del_fichero*
 
-8/11/2023
-El codigo puede leer ficheros .txt, cuenta el número de conexiones máximas y lee informacion. Se acaba el juego cuando las conexiones son las maximas posibles para el tablero, no mira si las conexiones son correctas
+15/12/2023
+El juego funciona correctamente
