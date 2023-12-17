@@ -15,14 +15,20 @@ typedef struct casilla
         int e, s; //0 o 1 (true or false)  
 } tcasilla;
 
+typedef struct fichas
+{
+	int ficha[MAX_N][MAX_N]; //fichas del 0-0 al 9-9
+	int n1, n2; //valores de la ficha (n1-n2/n2-n1) (1-2)->n1=1 n2=2 || n1=2 n2=1
+} tfichas;
+
 int main()
 {
         tcasilla casilla[MAX_FILAS][MAX_COLUMNAS];
+	tfichas ficha;
 
         unsigned int conexiones, max_conexiones;
-        int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas, n1=0, n2;
+        int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas;
 	char nombre_fichero[SIZE_NOMBRE_FICHERO], charf, y1, y2;
-        int ficha[MAX_N][MAX_N];
 
 	//inicio funcion inicializacion
         printf("Introduce el nombre del fichero: ");
@@ -51,7 +57,7 @@ int main()
                 cerrar_fichero();
 	}
 	//final funcion inicializacion
-        while(n1<=n) //cuando deje de cumplirse, el juego acaba (main loop)
+        while(ficha.n1<=n) //cuando deje de cumplirse, el juego acaba (main loop)
         {
                 conexiones = 0; //numero de conexiones
                 n1 = 0;
@@ -114,24 +120,24 @@ int main()
                 {
                         for(c=0;c<nc;c++)
                         {
-                                if((casilla[f][c].e == TRUE&&casilla[f][c].valor==n1&&casilla[f][c+1].valor==n2) || (casilla[f][c].e == TRUE&&casilla[f][c].valor==n2&&casilla[f][c+1].valor==n1) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==n1&&casilla[f+1][c].valor==n2) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==n2&&casilla[f+1][c].valor==n1))
+                                if((casilla[f][c].e == TRUE&&casilla[f][c].valor==ficha.n1&&casilla[f][c+1].valor==ficha.n2) || (casilla[f][c].e == TRUE&&casilla[f][c].valor==ficha.n2&&casilla[f][c+1].valor==ficha.n1) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==ficha.n1&&casilla[f+1][c].valor==ficha.n2) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==ficha.n2&&casilla[f+1][c].valor==ficha.n1))
                                 {
-                                	ficha[n1][n2] = TRUE;
+                                	ficha.ficha[n1][n2] = TRUE;
 					f=0;
 					c=-1;
-					n2++;
-					if(n2>n)
+					ficha.n2++;
+					if(ficha.n2>n)
 					{
-						n1++;
-						n2=0;
-						while(n1>n2)
-							n2++;
+						ficha.n1++;
+						ficha.n2=0;
+						while(ficha.n1>ficha.n2)
+							ficha.n2++;
 					}
                                 }
                         }
                 }
 		//final fincion comprobar fichas
-                if(n1<=n)
+                if(ficha.n1<=n)
 		{
 			//inicio funcion añadir conexiones
 	                do
