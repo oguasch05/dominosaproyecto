@@ -15,19 +15,12 @@ typedef struct casilla
         int e, s; //0 o 1 (true or false)  
 } tcasilla;
 
-typedef struct fichas
-{
-	int ficha[MAX_N][MAX_N]; //fichas del 0-0 al 9-9
-	int n1, n2; //valores de la ficha (n1-n2/n2-n1) (1-2)->n1=1 n2=2 || n1=2 n2=1
-} tfichas;
-
 int main()
 {
         tcasilla casilla[MAX_FILAS][MAX_COLUMNAS];
-	tfichas ficha;
 
         unsigned int conexiones, max_conexiones;
-        int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas;
+        int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas, n1, n2, fichas[MAX_N][MAX_N];
 	char nombre_fichero[SIZE_NOMBRE_FICHERO], charf, y1, y2;
 
 	//inicio funcion inicializacion
