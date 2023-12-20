@@ -13,17 +13,24 @@ typedef struct casilla
 {
         int valor; //valor casilla 0-9
         int e, s; //0 o 1 (true or false)  
-} tcasilla[MAX_FILAS][MAX_COLUMNAS];
+} tcasilla;
 
-int comprobar(tcasilla *casilla, int nf, int nc, int n);
+typedef struct tablero
+{
+        int f, c, nf, nc, n;
+        tcasilla casilla[MAX_FILAS][MAX_COLUMNAS];
+} tablero;
+
+
+//int comprobar(tablero *tablero);
 
 
 int main()
 {
-        tcasilla casilla;
+        tablero t;
 
         unsigned int conexiones, max_conexiones;
-        int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas, final=FALSE;
+        int err, num, title, x1, x2, num_casillas, final=FALSE;
 	char nombre_fichero[SIZE_NOMBRE_FICHERO], charf, y1, y2;
 
 	//inicio funcion inicializacion
@@ -36,310 +43,283 @@ int main()
 	} 
         else 
         {
-		n = leer_int_fichero();   //numero mas grande que aparece
-		nf = leer_int_fichero();  //numero de filas
-		nc = leer_int_fichero();  //numero de columnas
-                max_conexiones = nf*nc/2; //numero de conexiones maximas
-                printf("nf:%d nc:%d n:%d\n", nf, nc ,n);
+		t.n = leer_int_fichero();   //numero mas grande que aparece
+		t.nf = leer_int_fichero();  //numero de filas
+		t.nc = leer_int_fichero();  //numero de columnas
+                max_conexiones = t.nf*t.nc/2; //numero de conexiones maximas
 
-                for(f=0;f<nf;f++)
+                for(t.f=0;t.f<t.nf;t.f++)
                 {
-                        for(c=0;c<nc;c++)
+                        for(t.c=0;t.c<t.nc;t.c++)
                         {
-                                casilla[f][c].valor = leer_int_fichero(); //guarda los valores del tablero en la matriz casilla[][].valor
-                                casilla[f][c].e = FALSE; //borra todas las conexiones en e
-                                casilla[f][c].s = FALSE; //borra todas las conexiones en s
-                                printf("e:%d, s:%d in f:%d c:%d\n", casilla[f][c].e, casilla[f][c].s, f, c);
+                                t.casilla[t.f][t.c].valor = leer_int_fichero(); //guarda los valores del tablero en la matriz casilla[][].valor
+                                t.casilla[t.f][t.c].e = FALSE; //borra todas las conexiones en e
+                                t.casilla[t.f][t.c].s = FALSE; //borra todas las conexiones en s
                         }
                 }
                 cerrar_fichero();
 	}
 	//final funcion inicializacion
-        while(final!=TRUE) //cuando deje de cumplirse, el juego acaba (main loop)
-        {
-                conexiones = 0; //numero de conexiones
-                charf = 'A'; //cabecera de fila
-                t = 0; //cabecera de columna
-                printf_color_negrita();
-                printf("\n");
+        if(err==ABRIR_FICHERO_OK){
+                while(final!=TRUE) //cuando deje de cumplirse, el juego acaba (main loop)
+                {
+                        conexiones = 0; //numero de conexiones
+                        charf = 'A'; //cabecera de fila
+                        title = 0; //cabecera de columna
+                        printf_color_negrita();
+                        printf("\n");
 
-                //inicio funcion dibujar tablero
-		for(c=0;c<nc;c++)
-                {
-                        printf("   %d", t); //escribe la cabecera de las columnas
-                        t++;
-                } printf("\n ");
-                for(c=0;c<nc;c++)
-                {
-                        printf("+---");
-                } printf("+\n");
-                
-                for(f=0;f<nf;f++)
-                {
-                        printf("%c| ", charf);
-                        charf++;
-                        for(c=0;c<nc;c++)
+                        //inicio funcion dibujar tablero
+                        for(t.c=0;t.c<t.nc;t.c++)
                         {
-                                num = leer_int_fichero();
-                                printf_color_num(casilla[f][c].valor); //cambia el color al color del valor de la casilla
-                                printf("%d", casilla[f][c].valor);     //escribe las casillas
-                                printf_reset_color();
-                                printf_color_negrita();
-                                if(casilla[f][c].e==TRUE)
-                                {
-                                        printf("███");  //escribe la conexion en caso de que casilla[][].e sea cierto
-                                        conexiones++;                                                
-                                }
-                                else
-                                        printf("   ");  //escribe la conexion en caso de que casilla[][].e sea falso
-                        } printf("\n");
-                        for(c=0;c<nc;c++)
+                                printf("   %d", title); //escribe la cabecera de las columnas
+                                title++;
+                        } printf("\n ");
+                        for(t.c=0;t.c<t.nc;t.c++)
                         {
-                                printf(" + ");
-                                if(casilla[f][c].s == TRUE)
-                                {
-                                        printf("█"); //escribe la conexion en caso de que casilla[][].s sea cierto
-                                        conexiones++;
-                                }
-                                else
-                                        printf(" "); //escribe la conexion en caso de que casilla[][].e sea falso
-                        } printf(" +\n");
-
-                }
-		//final funcion dibujar tablero
-
-                printf("\n");
-                printf("\nConexiones: %u de %u\n\n", conexiones, max_conexiones); //escribe "__ conexiones de __"
-
-		//inicio funcion comprobar fichas
-                //final = comprobar(&casilla, nf, nc, n);
-
-                int n1, n2, ficha[MAX_N][MAX_N];
-                int err=FALSE;
-
-                printf("nf:%d nc:%d n:%d\n", nf, nc ,n);
-
-                for(f=0;f<n;f++)
-                {
-                        for(c=0;c<n;c++)
+                                printf("+---");
+                        } printf("+\n");
+                        
+                        for(t.f=0;t.f<t.nf;t.f++)
                         {
-                                ficha[f][c] = FALSE;
-                        }
-                }
-
-                for(n1=0, n2=0, printf("n1:%d n2:%d\n", n1, n2);err!=TRUE&&n1<n;n2++, printf("n1:%d n2:%d\n", n1, n2))
-                {
-                                if(n2>n)
+                                printf("%c| ", charf); //escribe la cabecera de las filas
+                                charf++;
+                                for(t.c=0;t.c<t.nc;t.c++)
                                 {
-                                        n1++;
-                                        n2=0;
-                                }
-                                if(n1<=n)
-                                {
-                                while(n1>n2)
-                                {
-                                        n2++;
-                                }
-
-                                for(f=0;ficha[n1][n2]!=TRUE&&f<nf;f++)
-                                {
-                                        for(c=0;ficha[n1][n2]!=TRUE&&c<nc;c++)
+                                        num = leer_int_fichero();
+                                        printf_color_num(t.casilla[t.f][t.c].valor); //cambia el color al color del valor de la casilla
+                                        printf("%d", t.casilla[t.f][t.c].valor);     //escribe las casillas
+                                        printf_reset_color();
+                                        printf_color_negrita();
+                                        if(t.casilla[t.f][t.c].e==TRUE)
                                         {
-                                                printf("e:%d, s:%d in f:%d c:%d\n", casilla[f][c].e, casilla[f][c].s, f, c);
-                                                if((casilla[f][c].e == TRUE && ((casilla[f][c].valor==n1&&casilla[f][c+1].valor==n2)||(casilla[f][c].valor==n2&&casilla[f][c+1].valor==n1))) || (casilla[f][c].s == TRUE && ((casilla[f][c].valor==n1&&casilla[f+1][c].valor==n2)||(casilla[f][c].valor==n2&&casilla[f+1][c].valor==n1))))
+                                                printf("███");  //escribe la conexion en caso de que casilla[][].e sea cierto
+                                                conexiones++;                                                
+                                        }
+                                        else
+                                                printf("   ");  //escribe la conexion en caso de que casilla[][].e sea falso
+                                } printf("\n");
+                                for(t.c=0;t.c<t.nc;t.c++)
+                                {
+                                        printf(" + ");
+                                        if(t.casilla[t.f][t.c].s == TRUE)
+                                        {
+                                                printf("█"); //escribe la conexion en caso de que casilla[][].s sea cierto
+                                                conexiones++;
+                                        }
+                                        else
+                                                printf(" "); //escribe la conexion en caso de que casilla[][].e sea falso
+                                } printf(" +\n");
+
+                        }
+                        //final funcion dibujar tablero
+
+                        printf("\n");
+                        printf("\nConexiones: %u de %u\n\n", conexiones, max_conexiones); //escribe "__ conexiones de __"
+
+                        //inicio funcion comprobar fichas
+                        //final = comprobar(&t);
+
+                        int n1, n2, ficha[MAX_N][MAX_N];
+
+                        //printf("nf:%d nc:%d n:%d\n", t.nf, t.nc, t.n);
+
+                        for(t.f=0;t.f<t.n;t.f++)
+                        {
+                                for(t.c=0;t.c<t.n;t.c++)
+                                {
+                                        ficha[t.f][t.c] = FALSE;
+                                }
+                        }
+
+                        for(n1=0, n2=0/*, printf("n1:%d n2:%d\n", n1, n2)*/;n1<t.n;n2++/*, printf("n1:%d n2:%d\n", n1, n2)*/)
+                        {
+                                        if(n2>t.n)
+                                        {
+                                                n1++;
+                                                n2=0;
+                                        }
+                                        if(n1<=t.n)
+                                        {
+                                                while(n1>n2)
                                                 {
-                                                        ficha[n1][n2] = TRUE;
-                                                        printf("%d-%d yes\n", n1, n2);
+                                                        n2++;
+                                                }
+
+                                                for(t.f=0;ficha[n1][n2]!=TRUE&&t.f<t.nf;t.f++)
+                                                {
+                                                        for(t.c=0;ficha[n1][n2]!=TRUE&&t.c<t.nc;t.c++)
+                                                        {
+                                                                //printf("e:%d, s:%d in f:%d c:%d\n", t.casilla[t.f][t.c].e, t.casilla[t.f][t.c].s, t.f, t.c);
+                                                                if((t.casilla[t.f][t.c].e == TRUE && ((t.casilla[t.f][t.c].valor==n1&&t.casilla[t.f][t.c+1].valor==n2)||(t.casilla[t.f][t.c].valor==n2&&t.casilla[t.f][t.c+1].valor==n1))) || (t.casilla[t.f][t.c].s == TRUE && ((t.casilla[t.f][t.c].valor==n1&&t.casilla[t.f+1][t.c].valor==n2)||(t.casilla[t.f][t.c].valor==n2&&t.casilla[t.f+1][t.c].valor==n1))))
+                                                                {
+                                                                        ficha[n1][n2] = TRUE;
+                                                                        //printf("%d-%d yes\n", n1, n2);
+                                                                }
+                                                        }
                                                 }
                                         }
-                                } 
-                                if(ficha[n1][n2]!=TRUE)
-                                        err=TRUE;
+                        }
+                                if(ficha[t.n][t.n]==TRUE)
+                                        final = TRUE;
+                                        //printf("final %d\n", final);
+
+                        if(final!=TRUE)
+                        {
+                                //inicio funcion añadir conexiones
+                                do
+                                {               
+                                        printf("Casillas a conectar/desconectar (ej: [A0B0]): "); //pide valores de dos casillas
+                                        scanf("%c%d%c%d%*c", &y1, &x1, &y2, &x2);       //guarda valores de dos casillas en x1, x2, y1, y2
+                                        if(y1>='a'&&y1<='z')
+                                        {
+                                                y1 = y1-'a'; //si la letra introducida es minuscula, y1 pasa a valer un numero (a=0,b=1,c=2,...)
+                                        }
+                                        if(y1>='A'&&y1<='Z')
+                                        {
+                                                y1 = y1-'A'; //si la letra introducida es mayuscula, y1 pasa a valer un numero (A=0,B=1,C=2,...)
+                                        }
+                                        if(y2>='a'&&y2<='z')
+                                        {
+                                                y2 = y2-'a'; //si la letra introducida es minuscula, y2 pasa a valer un numero (a=0,b=1,c=2,...)
+                                        }
+                                        if(y2>='A'&&y2<='Z')
+                                        {
+                                                y2 = y2-'A'; //si la letra introducida es mayuscula, y2 pasa a valer un numero (A=0,B=1,C=2,...)
+                                        }
                                 }
-                }
-                        if(ficha[n][n]==TRUE)
-                                final = TRUE;
-                                printf("final %d\n", final);
+                                while(x1==x2 && y1==y2 || x1!=x2 && y1!=y2 || x1-x2!=1 && y1-y2!=1 && x2-x1!=1 && y2-y1!=1 || y1>t.nf-1 || y2>t.nf-1 || x1>t.nc || x2>t.nc); //comprueba que la conexion es posible
+                                if(y1>y2)
+                                {
+                                        if(t.casilla[y2][x1].s == TRUE)
+                                        {
+                                                t.casilla[y2][x1].s = FALSE;
+                                        }
+                                        else
+                                        {
+                                                t.casilla[y1][x1].e = FALSE;
+                                                t.casilla[y1][x1].s = FALSE;
+                                                t.casilla[y2][x2].e = FALSE;
+                                                t.casilla[y2][x2].s = FALSE;
+                                                t.casilla[y1][x1-1].e = FALSE;
+                                                t.casilla[y1-1][x1].s = FALSE;
+                                                t.casilla[y2][x2-1].e = FALSE;
+                                                t.casilla[y2-1][x2].s = FALSE;
                 
-                // for(f=0;f<nf;f++)
-                // {
-                //         for(c=0;c<nc;c++)
-                //         {
-                //                 if((casilla[f][c].e == TRUE&&casilla[f][c].valor==n1&&casilla[f][c+1].valor==n2) || (casilla[f][c].e == TRUE&&casilla[f][c].valor==n2&&casilla[f][c+1].valor==n1) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==n1&&casilla[f+1][c].valor==n2) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==n2&&casilla[f+1][c].valor==n1))
-                //                 {
-                //                 	ficha[n1][n2] = TRUE;
-		// 			f=0;
-		// 			c=-1;
-		// 			n2++;
-		// 			if(n2>n)
-		// 			{
-		// 				n1++;
-		// 				n2=0;
-		// 				while(n1>n2)
-		// 					n2++;
-		// 			}
-                //                 }
-                //         }
-                // }
-                // if(ficha[n][n]==TRUE)
-                //         final = TRUE;
-		//final funcion comprobar fichas
-                if(final!=TRUE)
-		{
-			//inicio funcion añadir conexiones
-	                do
-	                {               
-	                        printf("Casillas a conectar/desconectar (ej: [A0B0]): "); //pide valores de dos casillas
-	                        scanf("%c%d%c%d%*c", &y1, &x1, &y2, &x2);       //guarda valores de dos casillas en x1, x2, y1, y2
-	                        if(y1>='a'&&y1<='z')
-	                        {
-	                                y1 = y1-'a'; //si la letra introducida es minuscula, y1 pasa a valer un numero (a=0,b=1,c=2,...)
-	                        }
-	                        if(y1>='A'&&y1<='Z')
-	                        {
-	                                y1 = y1-'A'; //si la letra introducida es mayuscula, y1 pasa a valer un numero (A=0,B=1,C=2,...)
-	                        }
-	                        if(y2>='a'&&y2<='z')
-	                        {
-	                                y2 = y2-'a'; //si la letra introducida es minuscula, y2 pasa a valer un numero (a=0,b=1,c=2,...)
-	                        }
-	                        if(y2>='A'&&y2<='Z')
-	                        {
-	                                y2 = y2-'A'; //si la letra introducida es mayuscula, y2 pasa a valer un numero (A=0,B=1,C=2,...)
-	                        }
-	                }
-	                while(x1==x2 && y1==y2 || x1!=x2 && y1!=y2 || x1-x2!=1 && y1-y2!=1 && x2-x1!=1 && y2-y1!=1 || y1>nf-1 || y2>nf-1 || x1>nc || x2>nc); //comprueba que la conexion es posible
-	                if(y1>y2)
-	                {
-	                        if(casilla[y2][x1].s == TRUE)
-	                        {
-	                                casilla[y2][x1].s = FALSE;
-	                        }
-	                        else
-	                        {
-	                                casilla[y1][x1].e = FALSE;
-	                                casilla[y1][x1].s = FALSE;
-	                                casilla[y2][x2].e = FALSE;
-	                                casilla[y2][x2].s = FALSE;
-	                                casilla[y1][x1-1].e = FALSE;
-	                                casilla[y1-1][x1].s = FALSE;
-	                                casilla[y2][x2-1].e = FALSE;
-	                                casilla[y2-1][x2].s = FALSE;
-	
-	                                casilla[y2][x1].s = TRUE;
-	                                
-	                        }
-	
-	                }
-	                else if(y1<y2)
-	                {
-	                        if(casilla[y1][x1].s == TRUE)
-	                        {
-	                                casilla[y1][x1].s = FALSE;
-	                        }
-	                        else
-	                        {
-	                                casilla[y1][x1].e = FALSE;
-	                                casilla[y1][x1].s = FALSE;
-	                                casilla[y2][x2].e = FALSE;
-	                                casilla[y2][x2].s = FALSE;
-	                                casilla[y1][x1-1].e = FALSE;
-	                                casilla[y1-1][x1].s = FALSE;
-	                                casilla[y2][x2-1].e = FALSE;
-	                                casilla[y2-1][x2].s = FALSE;
-	
-	                                casilla[y1][x1].s = TRUE;
-	                                
-	                        }
-	                }
-	                else if(x1>x2)
-	                {
-	                        if(casilla[y1][x2].e == TRUE)
-	                        {
-	                                casilla[y1][x2].e = FALSE;
-	                        }
-	                        else
-	                        {
-	                                casilla[y1][x1].e = FALSE;
-	                                casilla[y1][x1].s = FALSE;
-	                                casilla[y2][x2].e = FALSE;
-	                                casilla[y2][x2].s = FALSE;
-	                                casilla[y1][x1-1].e = FALSE;
-	                                casilla[y1-1][x1].s = FALSE;
-	                                casilla[y2][x2-1].e = FALSE;
-	                                casilla[y2-1][x2].s = FALSE;
-	
-	                                casilla[y1][x2].e = TRUE;
-	                                
-	                        }
-	                }
-	                else if(x1<x2)
-	                {
-	                        if(casilla[y1][x1].e == TRUE)
-	                        {
-	                                casilla[y1][x1].e = FALSE;
-	                        }
-	                        else
-	                        {
-	                                casilla[y1][x1].e = FALSE;
-	                                casilla[y1][x1].s = FALSE;
-	                                casilla[y2][x2].e = FALSE;
-	                                casilla[y2][x2].s = FALSE;
-	                                casilla[y1][x1-1].e = FALSE;
-	                                casilla[y1-1][x1].s = FALSE;
-	                                casilla[y2][x2-1].e = FALSE;
-	                                casilla[y2-1][x2].s = FALSE;
-	                                
-	                                casilla[y1][x1].e = TRUE;
-	                        }
-	                }       
-			//final funcion añadir conexiones
-		}
+                                                t.casilla[y2][x1].s = TRUE;
+                                                
+                                        }
+                
+                                }
+                                else if(y1<y2)
+                                {
+                                        if(t.casilla[y1][x1].s == TRUE)
+                                        {
+                                                t.casilla[y1][x1].s = FALSE;
+                                        }
+                                        else
+                                        {
+                                                t.casilla[y1][x1].e = FALSE;
+                                                t.casilla[y1][x1].s = FALSE;
+                                                t.casilla[y2][x2].e = FALSE;
+                                                t.casilla[y2][x2].s = FALSE;
+                                                t.casilla[y1][x1-1].e = FALSE;
+                                                t.casilla[y1-1][x1].s = FALSE;
+                                                t.casilla[y2][x2-1].e = FALSE;
+                                                t.casilla[y2-1][x2].s = FALSE;
+                
+                                                t.casilla[y1][x1].s = TRUE;
+                                                
+                                        }
+                                }
+                                else if(x1>x2)
+                                {
+                                        if(t.casilla[y1][x2].e == TRUE)
+                                        {
+                                                t.casilla[y1][x2].e = FALSE;
+                                        }
+                                        else
+                                        {
+                                                t.casilla[y1][x1].e = FALSE;
+                                                t.casilla[y1][x1].s = FALSE;
+                                                t.casilla[y2][x2].e = FALSE;
+                                                t.casilla[y2][x2].s = FALSE;
+                                                t.casilla[y1][x1-1].e = FALSE;
+                                                t.casilla[y1-1][x1].s = FALSE;
+                                                t.casilla[y2][x2-1].e = FALSE;
+                                                t.casilla[y2-1][x2].s = FALSE;
+                
+                                                t.casilla[y1][x2].e = TRUE;
+                                                
+                                        }
+                                }
+                                else if(x1<x2)
+                                {
+                                        if(t.casilla[y1][x1].e == TRUE)
+                                        {
+                                                t.casilla[y1][x1].e = FALSE;
+                                        }
+                                        else
+                                        {
+                                                t.casilla[y1][x1].e = FALSE;
+                                                t.casilla[y1][x1].s = FALSE;
+                                                t.casilla[y2][x2].e = FALSE;
+                                                t.casilla[y2][x2].s = FALSE;
+                                                t.casilla[y1][x1-1].e = FALSE;
+                                                t.casilla[y1-1][x1].s = FALSE;
+                                                t.casilla[y2][x2-1].e = FALSE;
+                                                t.casilla[y2-1][x2].s = FALSE;
+                                                
+                                                t.casilla[y1][x1].e = TRUE;
+                                        }
+                                }      //final funcion añadir conexiones
+                        }
+                }
         }
 	if (final==TRUE)
                 printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
 }
 
-int comprobar(tcasilla *casilla, int nf, int nc, int n)
-{
-int n1, n2, ficha[MAX_N][MAX_N];
-int f, c, final=FALSE, err=FALSE;
+// int comprobar(tablero *t)
+// {
+// int n1, n2, ficha[MAX_N][MAX_N];
+// int final=FALSE, err=FALSE;
 
-printf("nf:%d nc:%d n:%d\n", nf, nc ,n);
+// printf("nf:%d nc:%d n:%d\n", t->nf, t->nc, t->n);
 
-for(f=0;f<n;f++)
-{
-        for(c=0;c<n;c++)
-        {
-                ficha[f][c] = FALSE;
-        }
-}
+// for(t->f=0;t->f<t->n;t->f++)
+// {
+//         for(t->c=0;t->c<t->n;t->c++)
+//         {
+//                 ficha[t->f][t->c] = FALSE;
+//         }
+// }
 
-for(n1=0;err!=TRUE&&n1<=n;n1++)
-{
-        for(n2=0;err!=TRUE&&n2<=n;n2++)
-        {
-                if(n1>n2)
-                        n2++;
+// for(n1=0;err!=TRUE&&n1<=t->n;n1++)
+// {
+//         for(n2=0;err!=TRUE&&n2<=t->n;n2++)
+//         {
+//                 if(n1>n2)
+//                         n2++;
 
-                for(f=0;ficha[n1][n2]!=TRUE&&f<nf;f++)
-                {
-                        for(c=0;ficha[n1][n2]!=TRUE&&c<nc;c++)
-                        {
-                                printf("e:%d, s:%d in f:%d c:%d\n", casilla[f][c]->e, casilla[f][c]->s, f, c);
-                                if((casilla[f][c]->e == TRUE&&casilla[f][c]->valor==n1&&casilla[f][c+1]->valor==n2) || (casilla[f][c]->e == TRUE&&casilla[f][c]->valor==n2&&casilla[f][c+1]->valor==n1) || (casilla[f][c]->s == TRUE&&casilla[f][c]->valor==n1&&casilla[f+1][c]->valor==n2) || (casilla[f][c]->s == TRUE&&casilla[f][c]->valor==n2&&casilla[f+1][c]->valor==n1))
-                                {
-                       	                ficha[n1][n2] = TRUE;
-                                        printf("%d-%d yes\n", n1, n2);
-                                }
-                        }
-                } err=TRUE;
-        }
-}
-        if(ficha[n][n]==TRUE)
-                final = TRUE;
-                printf("final %d\n", final);
+//                 for(t->f=0;ficha[n1][n2]!=TRUE&&t->f<t->nf;t->f++)
+//                 {
+//                         for(t->c=0;ficha[n1][n2]!=TRUE&&t->c<t->nc;t->c++)
+//                         {
+//                                 printf("e:%d, s:%d in f:%d c:%d\n", t->casilla[t->f][t->c].e, t->casilla[t->f][t->c].s, t->f, t->c);
+//                                 if((t->casilla[t->f][t->c].e == TRUE&&t->casilla[t->f][t->c].valor==n1&&t->casilla[t->f][t->c+1].valor==n2) || (t->casilla[t->f][t->c].e == TRUE&&t->casilla[t->f][t->c].valor==n2&&t->casilla[t->f][t->c+1].valor==n1) || (t->casilla[t->f][t->c].s == TRUE&&t->casilla[t->f][t->c].valor==n1&&t->casilla[t->f+1][t->c].valor==n2) || (t->casilla[t->f][t->c].s == TRUE&&t->casilla[t->f][t->c].valor==n2&&t->casilla[t->f+1][t->c].valor==n1))
+//                                 {
+//                        	                ficha[n1][n2] = TRUE;
+//                                         printf("%d-%d yes\n", n1, n2);
+//                                 }
+//                         }
+//                 } err=TRUE;
+//         }
+// }
+//         if(ficha[t->n][t->n]==TRUE)
+//                 final = TRUE;
+//                 printf("final %d\n", final);
         
-        return final;
+//         return final;
         
-}
+// }
