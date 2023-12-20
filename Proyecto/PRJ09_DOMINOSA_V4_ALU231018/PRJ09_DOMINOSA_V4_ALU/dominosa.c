@@ -13,14 +13,17 @@ typedef struct casilla
 {
         int valor; //valor casilla 0-9
         int e, s; //0 o 1 (true or false)  
-} tcasilla;
+} tcasilla[MAX_FILAS][MAX_COLUMNAS];
+
+int comprobar(tcasilla *casilla, int nf, int nc, int n);
+
 
 int main()
 {
-        tcasilla casilla[MAX_FILAS][MAX_COLUMNAS];
+        tcasilla casilla;
 
         unsigned int conexiones, max_conexiones;
-        int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas, n1, n2, fichas[MAX_N][MAX_N];
+        int err, f, c, n, nf, nc, num, t, x1, x2, num_casillas, final=FALSE;
 	char nombre_fichero[SIZE_NOMBRE_FICHERO], charf, y1, y2;
 
 	//inicio funcion inicializacion
@@ -37,6 +40,7 @@ int main()
 		nf = leer_int_fichero();  //numero de filas
 		nc = leer_int_fichero();  //numero de columnas
                 max_conexiones = nf*nc/2; //numero de conexiones maximas
+                printf("nf:%d nc:%d n:%d\n", nf, nc ,n);
 
                 for(f=0;f<nf;f++)
                 {
@@ -45,16 +49,15 @@ int main()
                                 casilla[f][c].valor = leer_int_fichero(); //guarda los valores del tablero en la matriz casilla[][].valor
                                 casilla[f][c].e = FALSE; //borra todas las conexiones en e
                                 casilla[f][c].s = FALSE; //borra todas las conexiones en s
+                                printf("e:%d, s:%d in f:%d c:%d\n", casilla[f][c].e, casilla[f][c].s, f, c);
                         }
                 }
                 cerrar_fichero();
 	}
 	//final funcion inicializacion
-        while(ficha.n1<=n) //cuando deje de cumplirse, el juego acaba (main loop)
+        while(final!=TRUE) //cuando deje de cumplirse, el juego acaba (main loop)
         {
                 conexiones = 0; //numero de conexiones
-                n1 = 0;
-		n2 = 0;
                 charf = 'A'; //cabecera de fila
                 t = 0; //cabecera de columna
                 printf_color_negrita();
@@ -109,28 +112,79 @@ int main()
                 printf("\nConexiones: %u de %u\n\n", conexiones, max_conexiones); //escribe "__ conexiones de __"
 
 		//inicio funcion comprobar fichas
-                for(f=0;f<nf;f++)
+                //final = comprobar(&casilla, nf, nc, n);
+
+                int n1, n2, ficha[MAX_N][MAX_N];
+                int err=FALSE;
+
+                printf("nf:%d nc:%d n:%d\n", nf, nc ,n);
+
+                for(f=0;f<n;f++)
                 {
-                        for(c=0;c<nc;c++)
+                        for(c=0;c<n;c++)
                         {
-                                if((casilla[f][c].e == TRUE&&casilla[f][c].valor==ficha.n1&&casilla[f][c+1].valor==ficha.n2) || (casilla[f][c].e == TRUE&&casilla[f][c].valor==ficha.n2&&casilla[f][c+1].valor==ficha.n1) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==ficha.n1&&casilla[f+1][c].valor==ficha.n2) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==ficha.n2&&casilla[f+1][c].valor==ficha.n1))
-                                {
-                                	ficha.ficha[n1][n2] = TRUE;
-					f=0;
-					c=-1;
-					ficha.n2++;
-					if(ficha.n2>n)
-					{
-						ficha.n1++;
-						ficha.n2=0;
-						while(ficha.n1>ficha.n2)
-							ficha.n2++;
-					}
-                                }
+                                ficha[f][c] = FALSE;
                         }
                 }
-		//final fincion comprobar fichas
-                if(ficha.n1<=n)
+
+                for(n1=0, n2=0, printf("n1:%d n2:%d\n", n1, n2);err!=TRUE&&n1<n;n2++, printf("n1:%d n2:%d\n", n1, n2))
+                {
+                                if(n2>n)
+                                {
+                                        n1++;
+                                        n2=0;
+                                }
+                                if(n1<=n)
+                                {
+                                while(n1>n2)
+                                {
+                                        n2++;
+                                }
+
+                                for(f=0;ficha[n1][n2]!=TRUE&&f<nf;f++)
+                                {
+                                        for(c=0;ficha[n1][n2]!=TRUE&&c<nc;c++)
+                                        {
+                                                printf("e:%d, s:%d in f:%d c:%d\n", casilla[f][c].e, casilla[f][c].s, f, c);
+                                                if((casilla[f][c].e == TRUE && ((casilla[f][c].valor==n1&&casilla[f][c+1].valor==n2)||(casilla[f][c].valor==n2&&casilla[f][c+1].valor==n1))) || (casilla[f][c].s == TRUE && ((casilla[f][c].valor==n1&&casilla[f+1][c].valor==n2)||(casilla[f][c].valor==n2&&casilla[f+1][c].valor==n1))))
+                                                {
+                                                        ficha[n1][n2] = TRUE;
+                                                        printf("%d-%d yes\n", n1, n2);
+                                                }
+                                        }
+                                } 
+                                if(ficha[n1][n2]!=TRUE)
+                                        err=TRUE;
+                                }
+                }
+                        if(ficha[n][n]==TRUE)
+                                final = TRUE;
+                                printf("final %d\n", final);
+                
+                // for(f=0;f<nf;f++)
+                // {
+                //         for(c=0;c<nc;c++)
+                //         {
+                //                 if((casilla[f][c].e == TRUE&&casilla[f][c].valor==n1&&casilla[f][c+1].valor==n2) || (casilla[f][c].e == TRUE&&casilla[f][c].valor==n2&&casilla[f][c+1].valor==n1) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==n1&&casilla[f+1][c].valor==n2) || (casilla[f][c].s == TRUE&&casilla[f][c].valor==n2&&casilla[f+1][c].valor==n1))
+                //                 {
+                //                 	ficha[n1][n2] = TRUE;
+		// 			f=0;
+		// 			c=-1;
+		// 			n2++;
+		// 			if(n2>n)
+		// 			{
+		// 				n1++;
+		// 				n2=0;
+		// 				while(n1>n2)
+		// 					n2++;
+		// 			}
+                //                 }
+                //         }
+                // }
+                // if(ficha[n][n]==TRUE)
+                //         final = TRUE;
+		//final funcion comprobar fichas
+                if(final!=TRUE)
 		{
 			//inicio funcion añadir conexiones
 	                do
@@ -242,5 +296,50 @@ int main()
 			//final funcion añadir conexiones
 		}
         }
-	printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
+	if (final==TRUE)
+                printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
+}
+
+int comprobar(tcasilla *casilla, int nf, int nc, int n)
+{
+int n1, n2, ficha[MAX_N][MAX_N];
+int f, c, final=FALSE, err=FALSE;
+
+printf("nf:%d nc:%d n:%d\n", nf, nc ,n);
+
+for(f=0;f<n;f++)
+{
+        for(c=0;c<n;c++)
+        {
+                ficha[f][c] = FALSE;
+        }
+}
+
+for(n1=0;err!=TRUE&&n1<=n;n1++)
+{
+        for(n2=0;err!=TRUE&&n2<=n;n2++)
+        {
+                if(n1>n2)
+                        n2++;
+
+                for(f=0;ficha[n1][n2]!=TRUE&&f<nf;f++)
+                {
+                        for(c=0;ficha[n1][n2]!=TRUE&&c<nc;c++)
+                        {
+                                printf("e:%d, s:%d in f:%d c:%d\n", casilla[f][c]->e, casilla[f][c]->s, f, c);
+                                if((casilla[f][c]->e == TRUE&&casilla[f][c]->valor==n1&&casilla[f][c+1]->valor==n2) || (casilla[f][c]->e == TRUE&&casilla[f][c]->valor==n2&&casilla[f][c+1]->valor==n1) || (casilla[f][c]->s == TRUE&&casilla[f][c]->valor==n1&&casilla[f+1][c]->valor==n2) || (casilla[f][c]->s == TRUE&&casilla[f][c]->valor==n2&&casilla[f+1][c]->valor==n1))
+                                {
+                       	                ficha[n1][n2] = TRUE;
+                                        printf("%d-%d yes\n", n1, n2);
+                                }
+                        }
+                } err=TRUE;
+        }
+}
+        if(ficha[n][n]==TRUE)
+                final = TRUE;
+                printf("final %d\n", final);
+        
+        return final;
+        
 }
