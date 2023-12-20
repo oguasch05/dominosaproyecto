@@ -10,6 +10,7 @@ Si no compila: chmod +x *nombre_del_fichero*
 GITHUB
 
 Para guardar el codigo en la nube: 
+
     git add .
     
     git commit -m "mensaje corto que explica tus cambios" (o simplemente "cambios en dominosa.c")
