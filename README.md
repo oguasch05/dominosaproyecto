@@ -11,7 +11,9 @@ GITHUB
 
 Para guardar el codigo en la nube: 
     git add .
+    
     git commit -m "mensaje corto que explica tus cambios" (o simplemente "cambios en dominosa.c")
+    
     git push
 
 15/12/2023
