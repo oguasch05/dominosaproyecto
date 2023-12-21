@@ -222,54 +222,57 @@ tablero inicializar(tablero t)
 
 int dibujar(tablero t)
 {
-	int conexiones = 0, f, c, max_conexiones; //numero de conexiones
-    char charf = 'A'; //cabecera de fila
-    unsigned int title = 0; //cabecera de columna
+	int conexiones = 0, f, c, max_conexiones; 					//número de conexiones
+	char charf = 'A'; 								//cabecera de fila
+    unsigned int title = 0; 								//cabecera de columna
     printf_color_negrita();
     printf("\n");
-    for(c=0;c<t.nc;c++)
+	
+    for(c=0;c<t.nc;c++)									//bucle que se repite hasta printar la cabecera de las columnas
     {
-        printf("   %d", title); //escribe la cabecera de las columnas
+        printf("   %d", title); 							//escribe cada valor de la cabecera de las columnas
         title++;
     } printf("\n ");
-    for(c=0;c<t.nc;c++)
+    for(c=0;c<t.nc;c++)									//bucle para printar el tablero en el formato del ejemplo
     {
         printf("+---");
     } printf("+\n"); 
-    for(f=0;f<t.nf;f++)
+    for(f=0;f<t.nf;f++)									//bucle que va de fila en fila printando la cabecera de las filas
     {
-        printf("%c| ", charf); //escribe la cabecera de las filas
+        printf("%c| ", charf); 								//escribe la letra de la cabecera de las fila
         charf++;
-    	for(c=0;c<t.nc;c++)
+	    
+    	for(c=0;c<t.nc;c++)								//bucle que dentro del bucle de las filas, va printado en el color que toca el valor de cada casilla de columna en columna
         {
-            printf_color_num(t.mat[f][c].valor); //cambia el color al color del valor de la casilla
-            printf("%d", t.mat[f][c].valor);     //escribe las casillas
-            printf_reset_color();
+            printf_color_num(t.mat[f][c].valor); 					//cambia el color al color del valor de la casilla
+            printf("%d", t.mat[f][c].valor);     					//escribe el valor de las casillas
+            printf_reset_color();							//devuelve el color al inicial
             printf_color_negrita();
-            if(t.mat[f][c].e==TRUE)
+            if(t.mat[f][c].e==TRUE)							//evalúa si hay una conexión en la casilla que se está printando
             {
-                printf("███");  //escribe la conexion en caso de que casilla[][].e sea cierto
+                printf("███");  							//escribe la conexión en caso de que casilla[][].e sea cierto
                 conexiones++;                                                
             }
             else
-                printf("   ");  //escribe la conexion en caso de que casilla[][].e sea falso
+                printf("   ");  							//escribe un espacio en blanco en caso de que casilla[][].e sea falso
         } printf("\n");
-        for(c=0;c<t.nc;c++)
+	    
+        for(c=0;c<t.nc;c++)								//este bucle escribe la separación entre columnas y las conexiones verticales
         {
             printf(" + ");
             if(t.mat[f][c].s == TRUE)
             {
-                printf("█"); //escribe la conexion en caso de que casilla[][].s sea cierto
+                printf("█"); 								//escribe la conexión en caso de que casilla[][].s sea cierto
                 conexiones++;
             }
         	else
-                printf(" "); //escribe la conexion en caso de que casilla[][].e sea falso
+                printf(" "); 								//escribe un espacio en blanco en caso de que casilla[][].e sea falso
         } printf(" +\n");
     }
 	printf("\n");
-	max_conexiones = t.nf*t.nc/2; //numero de conexiones maximas
-    printf("\nConexiones: %u de %u\n\n", conexiones, max_conexiones); //escribe "__ conexiones de __"
-	return conexiones;
+	max_conexiones = t.nf*t.nc/2; 							//número de conexiones máximas
+    printf("\nConexiones: %u de %u\n\n", conexiones, max_conexiones); 			//escribe "__ conexiones de __", es decir, el número de conexiones que hay actualmente hechas respecto al número total de conexiones
+	return conexiones;								//devuelve las conexiones realizadas
 }
 
 
