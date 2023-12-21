@@ -24,23 +24,27 @@ typedef struct tablero
 tablero inicializar(tablero t);
 int dibujar(tablero t);
 void jugadas(tablero t);
-int comprobar(tablero *t);
+int comprobar(tablero t);
 
 
 int main()
 {
     tablero t;
     unsigned int conexiones;
-	int f, c, final=FALSE, title, c1, c2, f1, f2;
+	int f, c, conexiones_reales=0, title, c1, c2, f1, f2, max_conexiones;
 	char charf, y1, y2;
 
 	t = inicializar(t);
+        max_conexiones = t.nf*t.nc/2; //numero de conexiones maximas
         if(t.n!=-1)
         {
                 do {
                         conexiones = dibujar(t);
+                        conexiones_reales = comprobar(t);
+                        if(conexiones_reales<max_conexiones)
+                        {
                         do
-                {               
+                        {               
                         printf("Casillas a conectar/desconectar (ej: [A0B0]): "); //pide valores de dos casillas
                         scanf("%c%d%c%d%*c", &y1, &c1, &y2, &c2);       //guarda valores de dos casillas en x1, x2, y1, y2
                         if(y1>='a'&&y1<='z')
@@ -59,12 +63,11 @@ int main()
                         {
                                 f2 = y2-'A'; //si la letra introducida es mayuscula, f2 pasa a valer un numero (A=0,B=1,C=2,...)
                         }
-                }
-                while(c1==c2 && f1==f2 || c1!=c2 && f1!=f2 || c1-c2!=1 && f1-f2!=1 && c2-c1!=1 && f2-f1!=1 || f1>t.nf-1 || f2>t.nf-1 || c1>t.nc || c2>t.nc); //comprueba que la conexion es posible
-                printf("f1:%d f2:%d\n", f1, f2);
+                        }
+                        while(c1==c2 && f1==f2 || c1!=c2 && f1!=f2 || c1-c2!=1 && f1-f2!=1 && c2-c1!=1 && f2-f1!=1 || f1>t.nf-1 || f2>t.nf-1 || c1>t.nc || c2>t.nc); //comprueba que la conexion es posible
                                         
-                if(f1>f2)
-                {
+                        if(f1>f2)
+                        {
                         if(t.mat[f2][c1].s == TRUE)
                         {
                                 t.mat[f2][c1].s = FALSE;
@@ -75,16 +78,20 @@ int main()
                                 t.mat[f1][c1].s = FALSE;
                                 t.mat[f2][c2].e = FALSE;
                                 t.mat[f2][c2].s = FALSE;
-                                t.mat[f1][c1-1].e = FALSE;
-                                t.mat[f1-1][c1].s = FALSE;
-                                t.mat[f2][c2-1].e = FALSE;
-                                t.mat[f2-1][c2].s = FALSE;
+                                if(c1!=0)
+                                        t.mat[f1][c1-1].e = FALSE;
+                                if(c1!=0)
+                                        t.mat[f1-1][c1].s = FALSE;
+                                if(c2!=0)
+                                        t.mat[f2][c2-1].e = FALSE;
+                                if(f2!=0)
+                                        t.mat[f2-1][c2].s = FALSE;
                                 t.mat[f2][c1].s = TRUE;          
                         }
                         
-                }
-                else if(f1<f2)
-                {
+                        }
+                        else if(f1<f2)
+                        {
                         if(t.mat[f1][c1].s == TRUE)
                         {
                                 t.mat[f1][c1].s = FALSE;
@@ -95,15 +102,19 @@ int main()
                                 t.mat[f1][c1].s = FALSE;
                                 t.mat[f2][c2].e = FALSE;
                                 t.mat[f2][c2].s = FALSE;
-                                t.mat[f1][c1-1].e = FALSE;
-                                t.mat[f1-1][c1].s = FALSE;
-                                t.mat[f2][c2-1].e = FALSE;
-                                t.mat[f2-1][c2].s = FALSE;
+                                if(c1!=0)
+                                        t.mat[f1][c1-1].e = FALSE;
+                                if(c1!=0)
+                                        t.mat[f1-1][c1].s = FALSE;
+                                if(c2!=0)
+                                        t.mat[f2][c2-1].e = FALSE;
+                                if(f2!=0)
+                                        t.mat[f2-1][c2].s = FALSE;
                                 t.mat[f1][c1].s = TRUE;                
                         }
-                }
-                else if(c1>c2)
-                {
+                        }
+                        else if(c1>c2)
+                        {
                         if(t.mat[f1][c2].e == TRUE)
                         {
                                 t.mat[f1][c2].e = FALSE;
@@ -114,15 +125,19 @@ int main()
                                 t.mat[f1][c1].s = FALSE;
                                 t.mat[f2][c2].e = FALSE;
                                 t.mat[f2][c2].s = FALSE;
-                                t.mat[f1][c1-1].e = FALSE;
-                                t.mat[f1-1][c1].s = FALSE;
-                                t.mat[f2][c2-1].e = FALSE;
-                                t.mat[f2-1][c2].s = FALSE;
+                                if(c1!=0)
+                                        t.mat[f1][c1-1].e = FALSE;
+                                if(c1!=0)
+                                        t.mat[f1-1][c1].s = FALSE;
+                                if(c2!=0)
+                                        t.mat[f2][c2-1].e = FALSE;
+                                if(f2!=0)
+                                        t.mat[f2-1][c2].s = FALSE;
                                 t.mat[f1][c2].e = TRUE;        
                         }
-                }
-                else if(c1<c2)
-                {
+                        }
+                        else if(c1<c2)
+                        {
                         if(t.mat[f1][c1].e == TRUE)
                         {
                                 t.mat[f1][c1].e = FALSE;
@@ -133,60 +148,23 @@ int main()
                                 t.mat[f1][c1].s = FALSE;
                                 t.mat[f2][c2].e = FALSE;
                                 t.mat[f2][c2].s = FALSE;
-                                t.mat[f1][c1-1].e = FALSE;
-                                t.mat[f1-1][c1].s = FALSE;
-                                t.mat[f2][c2-1].e = FALSE;
-                                t.mat[f2-1][c2].s = FALSE;        
+                                if(c1!=0)
+                                        t.mat[f1][c1-1].e = FALSE;
+                                if(c1!=0)
+                                        t.mat[f1-1][c1].s = FALSE;
+                                if(c2!=0)
+                                        t.mat[f2][c2-1].e = FALSE;
+                                if(f2!=0)
+                                        t.mat[f2-1][c2].s = FALSE;      
                                 t.mat[f1][c1].e = TRUE;
                         }
-                }       //final funcion añadir conexiones
-
-                // 	final = comprobar(t);
+                        }       //final funcion añadir conexiones
+                        }
                 }
-                while(final!=TRUE);
+                while(conexiones_reales<max_conexiones);
         }
-        if (final==TRUE)
+        if (conexiones_reales==max_conexiones)
         printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
-                        //inicio funcion comprobar fichas
-                        //final = comprobar(&t);
-
-                        int n1, n2, ficha[MAX_N][MAX_N];
-
-                        //printf("nf:%d nc:%d n:%d\n", t.nf, t.nc, t.n);
-
-                        for(f=0;f<t.n;f++)
-                        {
-                                for(c=0;c<t.n;c++)
-                                {
-                                        ficha[f][c] = FALSE;
-                                }
-                        }
-
-                        n1=0, n2=0;
-	        	        do
-                             {
-                            if(n2>t.n) //pasa de la ficha 0-2 a la 1-1 en caso de que el numero mas grande (t.n) sea 1 (se salta la fichas 1-0, 2-0, 2-1 que estan repetidas)
-                            {
-                                n1++;
-                                n2=n1;
-                            }
-                            if(n1<=t.n) //comprueba que n1 no se salga del límite de la ficha t.n-t.n (ficha mas grande posible)
-                            {
-                                for(f=0;ficha[n1][n2]!=TRUE&&f<t.nf;f++)
-                                {
-                                    for(c=0;ficha[n1][n2]!=TRUE&&c<t.nc;c++)
-                                    {
-                                        if((t.mat[f][c].e == TRUE && ((t.mat[f][c].valor==n1&&t.mat[f][c+1].valor==n2)||(t.mat[f][c].valor==n2&&t.mat[f][c+1].valor==n1))) || (t.mat[f][c].s == TRUE && ((t.mat[f][c].valor==n1&&t.mat[f+1][c].valor==n2)||(t.mat[f][c].valor==n2&&t.mat[f+1][c].valor==n1))))
-                                            ficha[n1][n2] = TRUE;
-                                    }
-                                }
-                            }
-							n2++;
-                        }
-						while(ficha[n1][n2-1]==TRUE&&n1<t.n);
-
-                            //if(ficha[t.n][t.n]==TRUE)
-                                //final = TRUE;
 }
 
 tablero inicializar(tablero t)
@@ -274,7 +252,44 @@ int dibujar(tablero t)
 	return conexiones;
 }
 
-// int comprobar(tablero *t)
-// {
+int comprobar(tablero t)
+{
 
-// }
+        int f, c, n1, n2, ficha[MAX_N][MAX_N], conexiones=0, max_conexiones, final=FALSE;
+        max_conexiones = t.nf*t.nc/2; //numero de conexiones maximas
+
+        for(f=0;f<t.n;f++)
+        {
+                for(c=0;c<t.n;c++)
+                {
+                        ficha[f][c] = FALSE;
+                }
+        }
+
+        n1=0, n2=0;
+	do
+        {
+                if(n2>t.n) //pasa de la ficha 0-2 a la 1-1 en caso de que el numero mas grande (t.n) sea 1 (se salta la fichas 1-0, 2-0, 2-1 que estan repetidas)
+                {
+                        n1++;
+                        n2=n1;
+                }
+                if(n1<=t.n) //comprueba que n1 no se salga del límite de la ficha t.n-t.n (ficha mas grande posible)
+                {
+                        for(f=0;conexiones<max_conexiones&&f<t.nf;f++)
+                        {
+                                for(c=0;conexiones<max_conexiones&&c<t.nc;c++)
+                                {
+                                        if((t.mat[f][c].e == TRUE && ((t.mat[f][c].valor==n1&&t.mat[f][c+1].valor==n2)||(t.mat[f][c].valor==n2&&t.mat[f][c+1].valor==n1))) || (t.mat[f][c].s == TRUE && ((t.mat[f][c].valor==n1&&t.mat[f+1][c].valor==n2)||(t.mat[f][c].valor==n2&&t.mat[f+1][c].valor==n1))))
+                                        {
+                                                ficha[n1][n2] = TRUE;
+                                                conexiones++;
+                                        }
+                                }
+                        }
+                }
+			n2++;
+        }
+	while(ficha[n1][n2-1]==TRUE&&n1<t.n);
+        return conexiones;
+}
