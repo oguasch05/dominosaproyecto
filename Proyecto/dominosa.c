@@ -306,7 +306,7 @@ int comprobar(tablero t) //función que comprueba fila a fila y columna a column
                                 for(c = 0; conexiones < max_conexiones && c < t.nc; c++)
                                 {
                                         if((t.mat[f][c].e == TRUE && ((t.mat[f][c].valor == n1 && t.mat[f][c+1].valor == n2) || (t.mat[f][c].valor == n2 && t.mat[f][c+1].valor == n1))) || (t.mat[f][c].s == TRUE && ((t.mat[f][c].valor == n1 && t.mat[f+1][c].valor ==n 2) || (t.mat[f][c].valor == n2 && t.mat[f+1][c].valor == n1))))
-                                        {
+                                        {						//mira que el valor de las fichas no esté repetido en el tablero y todas estén presentes 
                                                 ficha[n1][n2] = TRUE;
                                                 conexiones++;
                                         }
@@ -315,6 +315,6 @@ int comprobar(tablero t) //función que comprueba fila a fila y columna a column
                 }
 			n2++;
         }
-	while(ficha[n1][n2-1]==TRUE&&n1<t.n);
-        return conexiones;
+	while(ficha[n1][n2-1] == TRUE && n1 < t.n);					//repite el bucle mientras el primer valor de la conexión sea menor que t.n 
+        return conexiones;								//devuelve el valor de las conexiones para más tarde ir comparandolas con las conexiones totales y acabar el juego cuando el valor sea el mismo
 }
