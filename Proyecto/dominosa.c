@@ -276,7 +276,8 @@ int dibujar(tablero t)
 }
 
 
-int comprobar(tablero t)
+int comprobar(tablero t) //función que comprueba fila a fila y columna a columna si existen todas las fichas que mediante conexiones se deben encontrar, desde la 0-0 hasta la ficha t.n-t.n, que será la de mayor valor
+			 //una vez ha revisado todas las fichas esto permitirá que el juego acabe
 {
 
         int f, c, n1, n2, ficha[MAX_N][MAX_N], conexiones=0, max_conexiones, final=FALSE;
