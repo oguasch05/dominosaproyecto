@@ -4,7 +4,7 @@ El codigo del proyecto está en dominosa.c
 
 Para compilar: 
 
-    gcc -o dominosa dominosa.c colores.c fichero.c
+    make
     
 Para ejecutar:
     
@@ -14,10 +14,7 @@ Para ejecutar el codigo modelo:
 
     ./ejdominosa
 
-Si no compila: 
-
-    chmod +x *nombre_del_fichero*
-
+    
 GITHUB
 
 Para guardar el codigo en la nube: 
@@ -67,19 +64,14 @@ sigue pidiendo la nueva conexión. No se muestra mensaje de error.
 
   Ejemplo:
 
-8<-[3001.txt]---
+		8<-[3001.txt]---
+		3 4 5
+		0 0 2 3 1
+		2 3 2 1 3
+		1 3 3 1 2
+		2 0 1 0 0
 
-3 4 5
-
-0 0 2 3 1
-
-2 3 2 1 3
-
-1 3 3 1 2
-
-2 0 1 0 0
-
--------------->8
+		-------------->8
 
 - Para imprimir la conexión horizontal podéis hacer copy-paste de:
 		printf("███");
