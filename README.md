@@ -19,3 +19,6 @@ Para guardar el codigo en la nube:
 
 15/12/2023
 El juego funciona correctamente, falta separar
+
+20/12/2023
+El juego se rompe al separar en funciones
