@@ -11,14 +11,14 @@
 
 typedef struct casilla
 {
-        int valor; //valor casilla 0-9
-        int e, s; //0 o 1 (true or false)  
+    int valor; //valor casilla 0-9
+    int e, s; //0 o 1 (true or false)  
 } tcasilla;
 
 typedef struct tablero
 {
-        int f, c, nf, nc, n;
-        tcasilla casilla[MAX_FILAS][MAX_COLUMNAS];
+    int f, c, nf, nc, n;
+    tcasilla casilla[MAX_FILAS][MAX_COLUMNAS];
 } tablero;
 
 
@@ -27,14 +27,14 @@ typedef struct tablero
 
 int main()
 {
-        tablero t;
+    tablero t;
 
-        unsigned int conexiones, max_conexiones;
-        int err, num, title, x1, x2, num_casillas, final=FALSE;
+    unsigned int conexiones, max_conexiones;
+    int err, num, title, x1, x2, num_casillas, final=FALSE;
 	char nombre_fichero[SIZE_NOMBRE_FICHERO], charf, y1, y2;
 
 	//inicio funcion inicializacion
-        printf("Introduce el nombre del fichero: ");
+    printf("Introduce el nombre del fichero: ");
 	scanf("%s%*c", nombre_fichero);
 	err = abrir_fichero(nombre_fichero);
 	if (err != ABRIR_FICHERO_OK) {
@@ -132,37 +132,31 @@ int main()
                                 }
                         }
 
-                        for(n1=0, n2=0/*, printf("n1:%d n2:%d\n", n1, n2)*/;n1<t.n;n2++/*, printf("n1:%d n2:%d\n", n1, n2)*/)
+                        n1=0, n2=0;
+						do
                         {
-                                        if(n2>t.n)
-                                        {
-                                                n1++;
-                                                n2=0;
-                                        }
-                                        if(n1<=t.n)
-                                        {
-                                                while(n1>n2)
-                                                {
-                                                        n2++;
-                                                }
-
-                                                for(t.f=0;ficha[n1][n2]!=TRUE&&t.f<t.nf;t.f++)
-                                                {
-                                                        for(t.c=0;ficha[n1][n2]!=TRUE&&t.c<t.nc;t.c++)
-                                                        {
-                                                                //printf("e:%d, s:%d in f:%d c:%d\n", t.casilla[t.f][t.c].e, t.casilla[t.f][t.c].s, t.f, t.c);
-                                                                if((t.casilla[t.f][t.c].e == TRUE && ((t.casilla[t.f][t.c].valor==n1&&t.casilla[t.f][t.c+1].valor==n2)||(t.casilla[t.f][t.c].valor==n2&&t.casilla[t.f][t.c+1].valor==n1))) || (t.casilla[t.f][t.c].s == TRUE && ((t.casilla[t.f][t.c].valor==n1&&t.casilla[t.f+1][t.c].valor==n2)||(t.casilla[t.f][t.c].valor==n2&&t.casilla[t.f+1][t.c].valor==n1))))
-                                                                {
-                                                                        ficha[n1][n2] = TRUE;
-                                                                        //printf("%d-%d yes\n", n1, n2);
-                                                                }
-                                                        }
-                                                }
-                                        }
+                            if(n2>t.n) //pasa de la ficha 0-2 a la 1-1 en caso de que el numero mas grande (t.n) sea 1 (se salta la fichas 1-0, 2-0, 2-1 que estan repetidas)
+                            {
+                                n1++;
+                                n2=n1;
+                            }
+                            if(n1<=t.n) //comprueba que n1 no se salga del límite de la ficha t.n-t.n (ficha mas grande posible)
+                            {
+                                for(t.f=0;ficha[n1][n2]!=TRUE&&t.f<t.nf;t.f++)
+                                {
+                                    for(t.c=0;ficha[n1][n2]!=TRUE&&t.c<t.nc;t.c++)
+                                    {
+                                        if((t.casilla[t.f][t.c].e == TRUE && ((t.casilla[t.f][t.c].valor==n1&&t.casilla[t.f][t.c+1].valor==n2)||(t.casilla[t.f][t.c].valor==n2&&t.casilla[t.f][t.c+1].valor==n1))) || (t.casilla[t.f][t.c].s == TRUE && ((t.casilla[t.f][t.c].valor==n1&&t.casilla[t.f+1][t.c].valor==n2)||(t.casilla[t.f][t.c].valor==n2&&t.casilla[t.f+1][t.c].valor==n1)))
+                                            ficha[n1][n2] = TRUE;
+                                    }
+                                }
+                            }
+							n2++;
                         }
-                                if(ficha[t.n][t.n]==TRUE)
-                                        final = TRUE;
-                                        //printf("final %d\n", final);
+						while(ficha[n1][n2-1]==TRUE&&n1<t.n);
+
+                            if(ficha[t.n][t.n]==TRUE)
+                                //final = TRUE;
 
                         if(final!=TRUE)
                         {
