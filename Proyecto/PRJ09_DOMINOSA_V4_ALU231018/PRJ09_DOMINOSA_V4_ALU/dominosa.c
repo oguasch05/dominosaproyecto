@@ -39,112 +39,105 @@ int main()
 		conexiones = dibujar(t);
 		do
         {               
-                                        printf("Casillas a conectar/desconectar (ej: [A0B0]): "); //pide valores de dos casillas
-                                        scanf("%c%d%c%d%*c", &y1, &c1, &y2, &c2);       //guarda valores de dos casillas en x1, x2, y1, y2
-                                        if(y1>='a'&&y1<='z')
-                                        {
-                                                f1 = y1-'a'; //si la letra introducida es minuscula, f1 pasa a valer un numero (a=0,b=1,c=2,...)
-                                        }
-                                        if(y1>='A'&&y1<='Z')
-                                        {
-                                                f1 = y1-'A'; //si la letra introducida es mayuscula, f1 pasa a valer un numero (A=0,B=1,C=2,...)
-                                        }
-                                        if(y2>='a'&&y2<='z')
-                                        {
-                                                f2 = y2-'a'; //si la letra introducida es minuscula, f2 pasa a valer un numero (a=0,b=1,c=2,...)
-                                        }
-                                        if(y2>='A'&&y2<='Z')
-                                        {
-                                                f2 = y2-'A'; //si la letra introducida es mayuscula, f2 pasa a valer un numero (A=0,B=1,C=2,...)
-                                        }
+                printf("Casillas a conectar/desconectar (ej: [A0B0]): "); //pide valores de dos casillas
+                scanf("%c%d%c%d%*c", &y1, &c1, &y2, &c2);       //guarda valores de dos casillas en x1, x2, y1, y2
+                if(y1>='a'&&y1<='z')
+                {
+                        f1 = y1-'a'; //si la letra introducida es minuscula, f1 pasa a valer un numero (a=0,b=1,c=2,...)
+                }
+                if(y1>='A'&&y1<='Z')
+                {
+                        f1 = y1-'A'; //si la letra introducida es mayuscula, f1 pasa a valer un numero (A=0,B=1,C=2,...)
+                }
+                if(y2>='a'&&y2<='z')
+                {
+                        f2 = y2-'a'; //si la letra introducida es minuscula, f2 pasa a valer un numero (a=0,b=1,c=2,...)
+                }
+                if(y2>='A'&&y2<='Z')
+                {
+                        f2 = y2-'A'; //si la letra introducida es mayuscula, f2 pasa a valer un numero (A=0,B=1,C=2,...)
+                }
         }
         while(c1==c2 && f1==f2 || c1!=c2 && f1!=f2 || c1-c2!=1 && f1-f2!=1 && c2-c1!=1 && f2-f1!=1 || f1>t.nf-1 || f2>t.nf-1 || c1>t.nc || c2>t.nc); //comprueba que la conexion es posible
-                                printf("f1:%d f2:%d\n", f1, f2);
+        printf("f1:%d f2:%d\n", f1, f2);
                                 
-                                if(f1>f2)
-                                {
-                                        if(t.mat[f2][c1].s == TRUE)
-                                        {
-                                                t.mat[f2][c1].s = FALSE;
-                                        }
-                                        else
-                                        {
-                                                t.mat[f1][c1].e = FALSE;
-                                                t.mat[f1][c1].s = FALSE;
-                                                t.mat[f2][c2].e = FALSE;
-                                                t.mat[f2][c2].s = FALSE;
-                                                t.mat[f1][c1-1].e = FALSE;
-                                                t.mat[f1-1][c1].s = FALSE;
-                                                t.mat[f2][c2-1].e = FALSE;
-                                                t.mat[f2-1][c2].s = FALSE;
+        if(f1>f2)
+        {
+                if(t.mat[f2][c1].s == TRUE)
+                {
+                        t.mat[f2][c1].s = FALSE;
+                }
+                else
+                {
+                        t.mat[f1][c1].e = FALSE;
+                        t.mat[f1][c1].s = FALSE;
+                        t.mat[f2][c2].e = FALSE;
+                        t.mat[f2][c2].s = FALSE;
+                        t.mat[f1][c1-1].e = FALSE;
+                        t.mat[f1-1][c1].s = FALSE;
+                        t.mat[f2][c2-1].e = FALSE;
+                        t.mat[f2-1][c2].s = FALSE;
+                        t.mat[f2][c1].s = TRUE;          
+                }
                 
-                                                t.mat[f2][c1].s = TRUE;
-                                                
-                                        }
-                
-                                }
-                                else if(f1<f2)
-                                {
-                                        if(t.mat[f1][c1].s == TRUE)
-                                        {
-                                                t.mat[f1][c1].s = FALSE;
-                                        }
-                                        else
-                                        {
-                                                t.mat[f1][c1].e = FALSE;
-                                                t.mat[f1][c1].s = FALSE;
-                                                t.mat[f2][c2].e = FALSE;
-                                                t.mat[f2][c2].s = FALSE;
-                                                t.mat[f1][c1-1].e = FALSE;
-                                                t.mat[f1-1][c1].s = FALSE;
-                                                t.mat[f2][c2-1].e = FALSE;
-                                                t.mat[f2-1][c2].s = FALSE;
-                
-                                                t.mat[f1][c1].s = TRUE;
-                                                
-                                        }
-                                }
-                                else if(c1>c2)
-                                {
-                                        if(t.mat[f1][c2].e == TRUE)
-                                        {
-                                                t.mat[f1][c2].e = FALSE;
-                                        }
-                                        else
-                                        {
-                                                t.mat[f1][c1].e = FALSE;
-                                                t.mat[f1][c1].s = FALSE;
-                                                t.mat[f2][c2].e = FALSE;
-                                                t.mat[f2][c2].s = FALSE;
-                                                t.mat[f1][c1-1].e = FALSE;
-                                                t.mat[f1-1][c1].s = FALSE;
-                                                t.mat[f2][c2-1].e = FALSE;
-                                                t.mat[f2-1][c2].s = FALSE;
-                
-                                                t.mat[f1][c2].e = TRUE;
-                                                
-                                        }
-                                }
-                                else if(c1<c2)
-                                {
-                                        if(t.mat[f1][c1].e == TRUE)
-                                        {
-                                                t.mat[f1][c1].e = FALSE;
-                                        }
-                                        else
-                                        {
-                                                t.mat[f1][c1].e = FALSE;
-                                                t.mat[f1][c1].s = FALSE;
-                                                t.mat[f2][c2].e = FALSE;
-                                                t.mat[f2][c2].s = FALSE;
-                                                t.mat[f1][c1-1].e = FALSE;
-                                                t.mat[f1-1][c1].s = FALSE;
-                                                t.mat[f2][c2-1].e = FALSE;
-                                                t.mat[f2-1][c2].s = FALSE;
-                                                
-                                                t.mat[f1][c1].e = TRUE;
-                                        }
-                                }      //final funcion añadir conexiones
+        }
+        else if(f1<f2)
+        {
+                if(t.mat[f1][c1].s == TRUE)
+                {
+                        t.mat[f1][c1].s = FALSE;
+                }
+                else
+                {
+                        t.mat[f1][c1].e = FALSE;
+                        t.mat[f1][c1].s = FALSE;
+                        t.mat[f2][c2].e = FALSE;
+                        t.mat[f2][c2].s = FALSE;
+                        t.mat[f1][c1-1].e = FALSE;
+                        t.mat[f1-1][c1].s = FALSE;
+                        t.mat[f2][c2-1].e = FALSE;
+                        t.mat[f2-1][c2].s = FALSE;
+                        t.mat[f1][c1].s = TRUE;                
+                }
+        }
+        else if(c1>c2)
+        {
+                if(t.mat[f1][c2].e == TRUE)
+                {
+                        t.mat[f1][c2].e = FALSE;
+                }
+                else
+                {
+                        t.mat[f1][c1].e = FALSE;
+                        t.mat[f1][c1].s = FALSE;
+                        t.mat[f2][c2].e = FALSE;
+                        t.mat[f2][c2].s = FALSE;
+                        t.mat[f1][c1-1].e = FALSE;
+                        t.mat[f1-1][c1].s = FALSE;
+                        t.mat[f2][c2-1].e = FALSE;
+                        t.mat[f2-1][c2].s = FALSE;
+                        t.mat[f1][c2].e = TRUE;        
+                }
+        }
+        else if(c1<c2)
+        {
+                if(t.mat[f1][c1].e == TRUE)
+                {
+                        t.mat[f1][c1].e = FALSE;
+                }
+                else
+                {
+                        t.mat[f1][c1].e = FALSE;
+                        t.mat[f1][c1].s = FALSE;
+                        t.mat[f2][c2].e = FALSE;
+                        t.mat[f2][c2].s = FALSE;
+                        t.mat[f1][c1-1].e = FALSE;
+                        t.mat[f1-1][c1].s = FALSE;
+                        t.mat[f2][c2-1].e = FALSE;
+                        t.mat[f2-1][c2].s = FALSE;        
+                        t.mat[f1][c1].e = TRUE;
+                }
+        }       //final funcion añadir conexiones
 
 	// 	final = comprobar(t);
 	}
@@ -165,8 +158,8 @@ int main()
                 //         }
 
                 //         n1=0, n2=0;
-				// 		do
-                //         {
+	        // 	        do
+                //              {
                 //             if(n2>t.n) //pasa de la ficha 0-2 a la 1-1 en caso de que el numero mas grande (t.n) sea 1 (se salta la fichas 1-0, 2-0, 2-1 que estan repetidas)
                 //             {
                 //                 n1++;
@@ -189,118 +182,6 @@ int main()
 
                 //             if(ficha[t.n][t.n]==TRUE)
                 //                 //final = TRUE;
-
-                //         if(final!=TRUE)
-                //         {
-                //                 //inicio funcion añadir conexiones
-                //                 do
-                //                 {               
-                //                         printf("Casillas a conectar/desconectar (ej: [A0B0]): "); //pide valores de dos casillas
-                //                         scanf("%c%d%c%d%*c", &y1, &x1, &y2, &x2);       //guarda valores de dos casillas en x1, x2, y1, y2
-                //                         if(y1>='a'&&y1<='z')
-                //                         {
-                //                                 y1 = y1-'a'; //si la letra introducida es minuscula, y1 pasa a valer un numero (a=0,b=1,c=2,...)
-                //                         }
-                //                         if(y1>='A'&&y1<='Z')
-                //                         {
-                //                                 y1 = y1-'A'; //si la letra introducida es mayuscula, y1 pasa a valer un numero (A=0,B=1,C=2,...)
-                //                         }
-                //                         if(y2>='a'&&y2<='z')
-                //                         {
-                //                                 y2 = y2-'a'; //si la letra introducida es minuscula, y2 pasa a valer un numero (a=0,b=1,c=2,...)
-                //                         }
-                //                         if(y2>='A'&&y2<='Z')
-                //                         {
-                //                                 y2 = y2-'A'; //si la letra introducida es mayuscula, y2 pasa a valer un numero (A=0,B=1,C=2,...)
-                //                         }
-                //                 }
-                //                 while(x1==x2 && y1==y2 || x1!=x2 && y1!=y2 || x1-x2!=1 && y1-y2!=1 && x2-x1!=1 && y2-y1!=1 || y1>t.nf-1 || y2>t.nf-1 || x1>t.nc || x2>t.nc); //comprueba que la conexion es posible
-                //                 if(y1>y2)
-                //                 {
-                //                         if(t.mat[y2][x1].s == TRUE)
-                //                         {
-                //                                 t.mat[y2][x1].s = FALSE;
-                //                         }
-                //                         else
-                //                         {
-                //                                 t.mat[y1][x1].e = FALSE;
-                //                                 t.mat[y1][x1].s = FALSE;
-                //                                 t.mat[y2][x2].e = FALSE;
-                //                                 t.mat[y2][x2].s = FALSE;
-                //                                 t.mat[y1][x1-1].e = FALSE;
-                //                                 t.mat[y1-1][x1].s = FALSE;
-                //                                 t.mat[y2][x2-1].e = FALSE;
-                //                                 t.mat[y2-1][x2].s = FALSE;
-                
-                //                                 t.mat[y2][x1].s = TRUE;
-                                                
-                //                         }
-                
-                //                 }
-                //                 else if(y1<y2)
-                //                 {
-                //                         if(t.mat[y1][x1].s == TRUE)
-                //                         {
-                //                                 t.mat[y1][x1].s = FALSE;
-                //                         }
-                //                         else
-                //                         {
-                //                                 t.mat[y1][x1].e = FALSE;
-                //                                 t.mat[y1][x1].s = FALSE;
-                //                                 t.mat[y2][x2].e = FALSE;
-                //                                 t.mat[y2][x2].s = FALSE;
-                //                                 t.mat[y1][x1-1].e = FALSE;
-                //                                 t.mat[y1-1][x1].s = FALSE;
-                //                                 t.mat[y2][x2-1].e = FALSE;
-                //                                 t.mat[y2-1][x2].s = FALSE;
-                
-                //                                 t.mat[y1][x1].s = TRUE;
-                                                
-                //                         }
-                //                 }
-                //                 else if(x1>x2)
-                //                 {
-                //                         if(t.mat[y1][x2].e == TRUE)
-                //                         {
-                //                                 t.mat[y1][x2].e = FALSE;
-                //                         }
-                //                         else
-                //                         {
-                //                                 t.mat[y1][x1].e = FALSE;
-                //                                 t.mat[y1][x1].s = FALSE;
-                //                                 t.mat[y2][x2].e = FALSE;
-                //                                 t.mat[y2][x2].s = FALSE;
-                //                                 t.mat[y1][x1-1].e = FALSE;
-                //                                 t.mat[y1-1][x1].s = FALSE;
-                //                                 t.mat[y2][x2-1].e = FALSE;
-                //                                 t.mat[y2-1][x2].s = FALSE;
-                
-                //                                 t.mat[y1][x2].e = TRUE;
-                                                
-                //                         }
-                //                 }
-                //                 else if(x1<x2)
-                //                 {
-                //                         if(t.mat[y1][x1].e == TRUE)
-                //                         {
-                //                                 t.mat[y1][x1].e = FALSE;
-                //                         }
-                //                         else
-                //                         {
-                //                                 t.mat[y1][x1].e = FALSE;
-                //                                 t.mat[y1][x1].s = FALSE;
-                //                                 t.mat[y2][x2].e = FALSE;
-                //                                 t.mat[y2][x2].s = FALSE;
-                //                                 t.mat[y1][x1-1].e = FALSE;
-                //                                 t.mat[y1-1][x1].s = FALSE;
-                //                                 t.mat[y2][x2-1].e = FALSE;
-                //                                 t.mat[y2-1][x2].s = FALSE;
-                                                
-                //                                 t.mat[y1][x1].e = TRUE;
-                //                         }
-                //                 }      //final funcion añadir conexiones
-                //         }
-                // } while(final!=TRUE);
 	if (final==TRUE)
                 printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
 }
