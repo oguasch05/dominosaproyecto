@@ -1,9 +1,9 @@
-//------------------------------------------------------- INCLUDES -------------------------------------------------
+//----------------------------------------------------------- INCLUDES -------------------------------------------------------
 #include <stdio.h>
 #include "colores.h"
 #include "fichero.h"
 
-//------------------------------------------------------- CONSTANTES -----------------------------------------------
+//--------------------------------------------------------- CONSTANTES --------------------------------------------------------
 
 #define SIZE_NOMBRE_FICHERO     80
 #define MAX_FILAS               11
@@ -12,7 +12,7 @@
 #define TRUE                    1
 #define FALSE                   0
 
-//------------------------------------------------------- STRUCTS --------------------------------------------------
+//------------------------------------------------------------ STRUCTS --------------------------------------------------------
 	
 typedef struct
 {
@@ -26,12 +26,14 @@ typedef struct
     tcasilla mat[MAX_FILAS][MAX_COLUMNAS];
 } tablero;
 
-//------------------------------------------------- DECLARACIÓN DE FUNCIONES ----------------------------------------
+//--------------------------------------------------- DECLARACIÓN DE FUNCIONES --------------------------------------------------
 
 tablero inicializar(tablero t); //da a escoger un tablero de juego y lee el fichero que lo contiene guardando la información que este contiene y returnando el valor de ciertos paràmetros del tablero 
 int dibujar(tablero t); //printa el tablero escogido en la función inicializar y las conexiones que se van realizando
 int comprobar(tablero t); //comprueba que las conexiones introducidas sean válidas, posibles y correctas
 
+
+//---------------------------------------------------------- MAIN ---------------------------------------------------------------
 
 int main()
 {
@@ -182,6 +184,8 @@ int main()
         printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");					//mensaje que muestra que el juego ha acabado y el jugador ha ganado la partida
 }
 
+//-------------------------------------------------------- FUNCIONES -------------------------------------------------------------
+
 tablero inicializar(tablero t)
 {
 	int err, f, c;
@@ -191,29 +195,30 @@ tablero inicializar(tablero t)
 	printf("Introduce el nombre del fichero: ");
 	scanf("%s%*c", nombre_fichero);
 	err = abrir_fichero(nombre_fichero);
-	if (err != ABRIR_FICHERO_OK) {
+	if (err != ABRIR_FICHERO_OK) {							//en caso de que el fichero no se pueda abrir, se muestra el siguiente mensaje
 		printf("ERROR: FICHERO NO ENCONTRADO.\n");
 		printf("PUEDE QUE EL NOMBRE NO SEA EL CORRECTO O QUE ESTE EN OTRO DIRECTORIO.\n");
 	} 
-        else 
+        else 										//lectura de la información de la partida extraida del fichero
         {
-		t.n = leer_int_fichero();   //numero mas grande que aparece
-		t.nf = leer_int_fichero();  //numero de filas
-		t.nc = leer_int_fichero();  //numero de columnas
+		t.n = leer_int_fichero();   						//número mas grande que aparece
+		t.nf = leer_int_fichero();  						//número de filas
+		t.nc = leer_int_fichero();  						//número de columnas
 
-                for(f=0;f<t.nf;f++)
+                for(f=0;f<t.nf;f++)							//bucle para inicializar todos los valores del tablero y sus conexiones en condiciones iniciales
                 {
                         for(c=0;c<t.nc;c++)
                         {
-                                t.mat[f][c].valor = leer_int_fichero(); //guarda los valores del tablero en la matriz casilla[][].valor
-                                t.mat[f][c].e = FALSE; //borra todas las conexiones en e
-                                t.mat[f][c].s = FALSE; //borra todas las conexiones en s
+                                t.mat[f][c].valor = leer_int_fichero(); 		//guarda los valores del tablero en la matriz casilla[][].valor
+                                t.mat[f][c].e = FALSE; 					//borra todas las conexiones en e
+                                t.mat[f][c].s = FALSE; 					//borra todas las conexiones en s
                         }
                 }
                 cerrar_fichero();
 	}
-	return t;
+	return t; 									//devuelve una variable de struct tablero
 }
+
 
 int dibujar(tablero t)
 {
@@ -266,6 +271,7 @@ int dibujar(tablero t)
     printf("\nConexiones: %u de %u\n\n", conexiones, max_conexiones); //escribe "__ conexiones de __"
 	return conexiones;
 }
+
 
 int comprobar(tablero t)
 {
