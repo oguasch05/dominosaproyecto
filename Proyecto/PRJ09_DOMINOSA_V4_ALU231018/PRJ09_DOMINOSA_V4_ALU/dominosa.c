@@ -1,3 +1,4 @@
+//----
 #include <stdio.h>
 #include "colores.h"
 #include "fichero.h"
@@ -9,13 +10,13 @@
 #define TRUE                    1
 #define FALSE                   0
 
-typedef struct casilla
+typedef struct
 {
     int valor; //valor casilla 0-9
     int e, s; //0 o 1 (true or false)  
 } tcasilla;
 
-typedef struct tablero
+typedef struct
 {
     int nf, nc, n;
     tcasilla mat[MAX_FILAS][MAX_COLUMNAS];
