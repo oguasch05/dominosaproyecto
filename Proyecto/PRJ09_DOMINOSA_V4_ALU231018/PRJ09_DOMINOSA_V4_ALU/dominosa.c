@@ -61,7 +61,7 @@ int main()
 	}
 	//final funcion inicializacion
         if(err==ABRIR_FICHERO_OK){
-                while(final!=TRUE) //cuando deje de cumplirse, el juego acaba (main loop)
+                do //cuando deje de cumplirse, el juego acaba (main loop)
                 {
                         conexiones = 0; //numero de conexiones
                         charf = 'A'; //cabecera de fila
@@ -274,7 +274,7 @@ int main()
                                         }
                                 }      //final funcion añadir conexiones
                         }
-                }
+                } while(final!=TRUE);
         }
 	if (final==TRUE)
                 printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
