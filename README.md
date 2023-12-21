@@ -68,11 +68,17 @@ sigue pidiendo la nueva conexión. No se muestra mensaje de error.
   Ejemplo:
 
 8<-[3001.txt]---
+
 3 4 5
+
 0 0 2 3 1
+
 2 3 2 1 3
+
 1 3 3 1 2
+
 2 0 1 0 0
+
 -------------->8
 
 - Para imprimir la conexión horizontal podéis hacer copy-paste de:
