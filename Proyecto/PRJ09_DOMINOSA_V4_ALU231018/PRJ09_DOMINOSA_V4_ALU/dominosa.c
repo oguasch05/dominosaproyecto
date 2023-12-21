@@ -1,7 +1,9 @@
-//----
+//------------------------------------------------------- INCLUDES -------------------------------------------------
 #include <stdio.h>
 #include "colores.h"
 #include "fichero.h"
+
+//------------------------------------------------------- CONSTANTES -----------------------------------------------
 
 #define SIZE_NOMBRE_FICHERO     80
 #define MAX_FILAS               11
@@ -10,6 +12,8 @@
 #define TRUE                    1
 #define FALSE                   0
 
+//------------------------------------------------------- STRUCTS --------------------------------------------------
+	
 typedef struct
 {
     int valor; //valor casilla 0-9
@@ -22,10 +26,11 @@ typedef struct
     tcasilla mat[MAX_FILAS][MAX_COLUMNAS];
 } tablero;
 
-tablero inicializar(tablero t);
-int dibujar(tablero t);
-void jugadas(tablero t);
-int comprobar(tablero t);
+//------------------------------------------------- DECLARACIÓN DE FUNCIONES ----------------------------------------
+
+tablero inicializar(tablero t); //da a escoger un tablero de juego y lee el fichero que lo contiene guardando la información que este contiene y returnando el valor de ciertos paràmetros del tablero 
+int dibujar(tablero t); //printa el tablero escogido en la función inicializar y las conexiones que se van realizando
+int comprobar(tablero t); //comprueba que las conexiones introducidas sean válidas, posibles y correctas
 
 
 int main()
@@ -35,47 +40,47 @@ int main()
 	int f, c, conexiones_reales=0, title, c1, c2, f1, f2, max_conexiones;
 	char charf, y1, y2;
 
-	t = inicializar(t);
-        max_conexiones = t.nf*t.nc/2; //numero de conexiones maximas
+	t = inicializar(t); 							//inicia el juego
+        max_conexiones = t.nf*t.nc/2; 						//número de conexiones máximas
         if(t.n!=-1)
         {
                 do {
-                        conexiones = dibujar(t);
+                        conexiones = dibujar(t); 
                         conexiones_reales = comprobar(t);
                         if(conexiones_reales<max_conexiones)
                         {
                         do
                         {               
-                        printf("Casillas a conectar/desconectar (ej: [A0B0]): "); //pide valores de dos casillas
-                        scanf("%c%d%c%d%*c", &y1, &c1, &y2, &c2);       //guarda valores de dos casillas en x1, x2, y1, y2
-                        if(y1>='a'&&y1<='z')
+                        printf("Casillas a conectar/desconectar (ej: [A0B0]): "); 			//pide valores de las dos casillas que se quieren conectar o desconectar
+                        scanf("%c%d%c%d%*c", &y1, &c1, &y2, &c2);       				//guarda los valores de las dos casillas a conectar en y1, y2, c1, c2 siendo 'y' la letra (char) de la fila escogida (que se pasará a int) y 'c' el número de la columna, 1 y 2 hacen referencia a la casilla primera o segunda que queremos conectar
+                        if(y1>='a'&&y1<='z')								//evalúa que la letra de la primera casilla sea minúscula 
                         {
-                                f1 = y1-'a'; //si la letra introducida es minuscula, f1 pasa a valer un numero (a=0,b=1,c=2,...)
+                                f1 = y1-'a'; 								//si la letra introducida es minúscula, f1 pasa a valer un número (a=0,b=1,c=2,...)
                         }
-                        if(y1>='A'&&y1<='Z')
+                        if(y1>='A'&&y1<='Z')								//evalúa que la letra de la primera casilla sea mayúscula 
                         {
-                                f1 = y1-'A'; //si la letra introducida es mayuscula, f1 pasa a valer un numero (A=0,B=1,C=2,...)
+                                f1 = y1-'A'; 								//si la letra introducida es mayúscula, f1 pasa a valer un número (A=0,B=1,C=2,...)
                         }
-                        if(y2>='a'&&y2<='z')
+                        if(y2>='a'&&y2<='z')								//evalúa que la letra de la segunda casilla sea minúscula 
                         {
-                                f2 = y2-'a'; //si la letra introducida es minuscula, f2 pasa a valer un numero (a=0,b=1,c=2,...)
+                                f2 = y2-'a'; 								//si la letra introducida es minúscula, f2 pasa a valer un número (a=0,b=1,c=2,...)
                         }
-                        if(y2>='A'&&y2<='Z')
+                        if(y2>='A'&&y2<='Z')								//evalúa que la letra de la segunda casilla sea mayúscula
                         {
-                                f2 = y2-'A'; //si la letra introducida es mayuscula, f2 pasa a valer un numero (A=0,B=1,C=2,...)
+                                f2 = y2-'A'; 								//si la letra introducida es mayúscula, f2 pasa a valer un número (A=0,B=1,C=2,...)
                         }
                         }
-                        while(c1==c2 && f1==f2 || c1!=c2 && f1!=f2 || c1-c2!=1 && f1-f2!=1 && c2-c1!=1 && f2-f1!=1 || f1>t.nf-1 || f2>t.nf-1 || c1>t.nc || c2>t.nc); //comprueba que la conexion es posible
+                        while(c1==c2 && f1==f2 || c1!=c2 && f1!=f2 || c1-c2!=1 && f1-f2!=1 && c2-c1!=1 && f2-f1!=1 || f1>t.nf-1 || f2>t.nf-1 || c1>t.nc || c2>t.nc); //comprueba que la conexión es posible mirando si las casillas escogidas son consecutivas
                                         
-                        if(f1>f2)
+                        if(f1>f2) 									//mira que la conexión sea vertical ascendente (de abajo a arriba)
                         {
-                        if(t.mat[f2][c1].s == TRUE)
+                        if(t.mat[f2][c1].s == TRUE)							//si la conexión evaluada ya existe, la borra
                         {
                                 t.mat[f2][c1].s = FALSE;
                         }
-                        else
+                        else										//mira que la conexión no este hecha con anterioridad
                         {
-                                t.mat[f1][c1].e = FALSE;
+                                t.mat[f1][c1].e = FALSE;						//mira que no haya conexiones que interfieran con la que queremos añadir y si las hay las elimina
                                 t.mat[f1][c1].s = FALSE;
                                 t.mat[f2][c2].e = FALSE;
                                 t.mat[f2][c2].s = FALSE;
