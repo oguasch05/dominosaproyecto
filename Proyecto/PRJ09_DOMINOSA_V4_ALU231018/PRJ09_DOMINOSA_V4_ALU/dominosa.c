@@ -35,6 +35,15 @@ int comprobar(tablero t); //comprueba que las conexiones introducidas sean váli
 
 int main()
 {
+	// Pasos del juego:
+	// 1.- Inicializamos las variables
+	// 2.- Generamos un tablero a partir del fichero seleccionado
+	// 3.- Pintamos el tablero con el que vamos a jugar
+	// 4.- Recibimos la jugada del usuario , comprobamos si esta jugada es valida y la realizamos en el caso de que todos los filtros se cumplan
+	// 5.- Pintamos el tablero
+	// Se iteran los puntos 4 y 5 hasta que todo el tablero este relleno
+	// 7.- Se determina que el juego ha terminado
+	
     tablero t;
     unsigned int conexiones;
 	int f, c, conexiones_reales=0, title, c1, c2, f1, f2, max_conexiones;
@@ -44,7 +53,7 @@ int main()
         max_conexiones = t.nf*t.nc/2; 						//número de conexiones máximas
         if(t.n!=-1)
         {
-                do {
+                do {				//se repite mientras las conexiones realizadas no coincidan con las de cada una de las fichas
                         conexiones = dibujar(t); 
                         conexiones_reales = comprobar(t);
                         if(conexiones_reales<max_conexiones)
@@ -170,7 +179,7 @@ int main()
                 while(conexiones_reales<max_conexiones);
         }
         if (conexiones_reales==max_conexiones)
-        printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");
+        printf("FELICIDADES! HAS RESUELTO ESTE DOMINOSA! B-)\n\n");					//mensaje que muestra que el juego ha acabado y el jugador ha ganado la partida
 }
 
 tablero inicializar(tablero t)
