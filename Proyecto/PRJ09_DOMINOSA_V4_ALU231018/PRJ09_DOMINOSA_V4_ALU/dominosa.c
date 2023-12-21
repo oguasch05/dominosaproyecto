@@ -96,9 +96,9 @@ int main()
                         }
                         
                         }
-                        else if(f1<f2)
+                        else if(f1<f2) 									//mira que la conexión sea horizontal descendente (de arriba a abajo)
                         {
-                        if(t.mat[f1][c1].s == TRUE)
+                        if(t.mat[f1][c1].s == TRUE)							//hace el mismo proceso que antes de evaluar si la conexión ya existía y hace los cambios necesarios para que se pueda hacer o deshacer la conexión
                         {
                                 t.mat[f1][c1].s = FALSE;
                         }
@@ -119,7 +119,7 @@ int main()
                                 t.mat[f1][c1].s = TRUE;                
                         }
                         }
-                        else if(c1>c2)
+                        else if(c1>c2) 									//mismo procedimiento está vez evaluando las conexiones horizontales de derecha a izquierda
                         {
                         if(t.mat[f1][c2].e == TRUE)
                         {
@@ -142,7 +142,7 @@ int main()
                                 t.mat[f1][c2].e = TRUE;        
                         }
                         }
-                        else if(c1<c2)
+                        else if(c1<c2)									//mismo procedimiento evaluando las conexiones horizontales de izquierda a derecha
                         {
                         if(t.mat[f1][c1].e == TRUE)
                         {
@@ -164,7 +164,7 @@ int main()
                                         t.mat[f2-1][c2].s = FALSE;      
                                 t.mat[f1][c1].e = TRUE;
                         }
-                        }       //final funcion añadir conexiones
+                        }     
                         }
                 }
                 while(conexiones_reales<max_conexiones);
